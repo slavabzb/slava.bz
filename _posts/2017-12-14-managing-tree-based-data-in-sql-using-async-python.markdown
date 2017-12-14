@@ -106,6 +106,7 @@ a text into _comments_ table.
 	</tr>
 </tbody>
 </table>
+<br />
 
 We would also mark that comment as a parent (or ancestor) of itself.
 
@@ -125,7 +126,9 @@ We would also mark that comment as a parent (or ancestor) of itself.
 		<td class="tg-second">1</td>
 		<td class="tg-second">0</td>
 	</tr>
-</tbody></table>
+</tbody>
+</table>
+<br />
 
 To create a child comment we additionally put a relation with its grand parent (a non direct
 ancestor with non-zero depth). The tables are changed as shown below.
@@ -146,6 +149,7 @@ ancestor with non-zero depth). The tables are changed as shown below.
 	</tr>
 </tbody>
 </table>
+<br />
 
 <table class="comments-tree-tbl">
 <tbody>
@@ -177,7 +181,9 @@ ancestor with non-zero depth). The tables are changed as shown below.
 		<td class="tg-second">2</td>
 		<td class="tg-second">1</td>
 	</tr>
-</tbody></table>
+</tbody>
+</table>
+<br />
 
 Now we can see that the number of the relations and the depth are growing together. That's why
 closure table model has often been criticized. Obviously, in order to add an element with high
@@ -192,37 +198,38 @@ In many cases, the time of data selection is more significant than the insertion
 Back to our example. The full comment branch is looking like that.
 
 <table class="comments-structure-tbl">
-	<tbody>
-		<tr>
-			<td>1</td>
-			<td>&nbsp; Can anybody explain me the difference between Bitcoin and Etherium?</td>
-		</tr>
-		<tr>
-			<td>2</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp; I'm sure no one can.</td>
-		</tr>
-		<tr>
-			<td>6</td>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Why are you so sure?</td>
-		</tr>
-		<tr>
-		    <td>7</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a blog about cooking!</td>
-		</tr>
-		<tr>
-		    <td>3</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The same request.</td>
-		</tr>
-		<tr>
-		    <td>4</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No problem, I'll give an explanation paper later.</td>
-		</tr>
-		<tr>
-		    <td>5</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send me it by email then.</td>
-		</tr>
-	</tbody>
+<tbody>
+	<tr>
+		<td>1</td>
+		<td>&nbsp; Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+	<tr>
+		<td>2</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp; I'm sure no one can.</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Why are you so sure?</td>
+	</tr>
+	<tr>
+	    <td>7</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a blog about cooking!</td>
+	</tr>
+	<tr>
+	    <td>3</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The same request.</td>
+	</tr>
+	<tr>
+	    <td>4</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No problem, I'll give an explanation paper later.</td>
+	</tr>
+	<tr>
+	    <td>5</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send me it by email then.</td>
+	</tr>
+</tbody>
 </table>
+<br />
 
 Let's see how this branch will be represented in the tables.
 
@@ -262,6 +269,7 @@ Let's see how this branch will be represented in the tables.
 </tr>
 </tbody>
 </table>
+<br />
 
 <table class="comments-tree-tbl">
 <tbody>
@@ -393,6 +401,7 @@ Let's see how this branch will be represented in the tables.
 </tr>
 </tbody>
 </table>
+<br />
 
 As it shown above, there is a root comment with zero depth within the branch and the max depth
 (or level) of comments is 3. Now let's see how we can deal with these tables in Python using
@@ -402,10 +411,224 @@ SQLAlchemy.
 
 ### Inserting a node to the tree
 
+Filling _comments_tree_ table can be done by using SQL
+[INSERT INTO SELECT](https://www.w3schools.com/sql/sql_insert_into_select.asp) statement.
+Using SQLAlchemy it can be written like shown below.
 
+{% highlight python %}
+import sqlalchemy as sa
+ 
+ancestor = comments_tree.alias('ancestor')
+descendant = comments_tree.alias('descendant')
+nearest = comments_tree.alias('nearest')
+ 
+sel = sa.select([
+	descendant.c.ancestor_id,
+	nearest.c.nearest_ancestor_id,
+	ancestor.c.descendant_id,
+	nearest.c.depth + 1
+]).where(sa.and_(
+	descendant.c.descendant_id == parent_id,
+	ancestor.c.ancestor_id == comment_id,
+	nearest.c.ancestor_id == parent_id,
+	nearest.c.descendant_id == parent_id,
+))
 
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
+ins = comments_tree.insert().from_select([
+    comments_tree.c.ancestor_id,
+    comments_tree.c.nearest_ancestor_id,
+    comments_tree.c.descendant_id,
+    comments_tree.c.depth,
+], sel)
+{% endhighlight %}
 
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+That code produces the following SQL query.
+
+{% highlight sql %}
+INSERT INTO comments_tree
+	(ancestor_id, nearest_ancestor_id, descendant_id, depth)
+SELECT
+	descendant.ancestor_id,
+	nearest.nearest_ancestor_id,
+	ancestor.descendant_id,
+	nearest.depth + 1
+FROM
+	comments_tree AS descendant,
+	comments_tree AS nearest,
+	comments_tree AS ancestor
+WHERE descendant.descendant_id = PARENT_ID
+	AND ancestor.ancestor_id = COMMENT_ID
+	AND nearest.ancestor_id = PARENT_ID
+	AND nearest.descendant_id = PARENT_ID
+{% endhighlight %}
+
+### Selecting a sub-tree
+
+Selecting the whole comment branch can be done like that.
+
+{% highlight python %}
+import sqlalchemy as sa
+ 
+join = comments.join(
+	comments_tree, comments.c.id == comments_tree.c.descendant_id
+)
+
+sel = sa.select([
+	comments_tree.c.nearest_ancestor_id,
+	comments.c.id,
+	comments.c.content,
+]).select_from(join).where(comments_tree.c.ancestor_id == comment_id)
+{% endhighlight %}
+
+The corresponding SQL query.
+
+{% highlight sql %}
+SELECT
+	comments_tree.nearest_ancestor_id,
+	comments_comments.id,
+	comments_comments.content
+FROM
+    comments_comments
+JOIN comments_tree ON comments_comments.id = comments_tree.descendant_id
+WHERE comments_tree.ancestor_id = COMMENT_ID
+{% endhighlight %}
+
+### Deleting a sub-tree
+
+To delete a comment and all its sub-comments we have to:
+
+* figure out and remove all the relations in which the target comment is involved (meaning it's an ancestor or a nearest ancestor or a descendant),
+* remove all the comments for which the target comment is an ancestor.
+
+Using SQLAlchemy we can write it like that.
+
+{% highlight python %}
+import sqlalchemy as sa
+ 
+remove = comments_tree.alias('remove')
+descendant = comments_tree.alias('descendant')
+ 
+sel = sa.select([remove.c.descendant_id, remove.c.id]).where(sa.and_(
+	sa.or_(
+		remove.c.ancestor_id == descendant.c.descendant_id,
+		remove.c.nearest_ancestor_id == descendant.c.descendant_id,
+		remove.c.descendant_id == descendant.c.descendant_id,
+	),
+	descendant.c.ancestor_id == comment_id,
+))
+{% endhighlight %}
+
+SQL query.
+
+{% highlight sql %}
+SELECT
+	remove.descendant_id,
+    remove.id
+FROM
+	comments_tree AS remove,
+	comments_tree AS descendant
+WHERE (remove.ancestor_id = descendant.descendant_id
+    OR remove.nearest_ancestor_id = descendant.descendant_id
+	OR remove.descendant_id = descendant.descendant_id)
+	AND descendant.ancestor_id = COMMENT_ID
+{% endhighlight %}
+
+That query will select all the ids of  the comments (the first column) and all the ids of the
+comment relations (the second column) we need to delete.
+
+## The details
+
+### Schema changes
+
+It's most likely that we'll want to show more info about comments, not only a text. For instance,
+we may want to display a name of the author of the comment and the time when comment has been left.
+It will cause the schema changes to be applied. We would probably want to use one of the database
+schema management systems like
+[SQLAlchemy Migrate](http://sqlalchemy-migrate.readthedocs.io/en/latest/index.html)
+to simplify that.
+
+### Executing SQL
+
+Due to async Python we would use [aiopg](https://aiopg.readthedocs.io/en/stable/index.html) to
+operate upon PostgreSQL. We can init and shutdown a connection pool as shown below.
+
+{% highlight python %}
+import aiopg.sa
+from aiohttp import web
+ 
+async def setup_pg(app):
+	engine = await aiopg.sa.create_engine(DATABASE)
+	app['db'] = engine
+
+async def close_pg(app):
+	app['db'].close()
+	await app['db'].wait_closed()
+
+app = web.Application()
+
+app.on_startup.append(setup_pg)
+app.on_cleanup.append(close_pg)
+{% endhighlight %}
+
+### Full-text search
+
+PostgreSQL supports full-text search, we can exploit it using SQLAlchemy.
+
+{% highlight python %}
+import sqlalchemy as sa
+from sqlalchemy.sql.expression import func
+ 
+sel = sa.select([comments]).where(comments.c.content.match(
+	sa.cast(func.plainto_tsquery('query text'), sa.TEXT)
+))
+{% endhighlight %}
+
+That will produce the following SQL query.
+
+{% highlight sql %}
+SELECT
+	comments_comments.id,
+    comments_comments.content
+FROM
+	comments_comments
+WHERE
+	comments_comments.content @@ to_tsquery(
+		CAST(plainto_tsquery('query text') AS TEXT)
+	)
+{% endhighlight %}
+
+This is a basic full-text search usage. For more complex examples see the links below.
+
+### User auth
+
+To avoid unauthorized access to the API we would require an auth token being passed as a
+parameter to each call. We can use [JSON Web Tokens](https://en.wikipedia.org/wiki/JSON_Web_Token)
+to implement that. To figure out how to use JWT in Python, follow the links below.
+
+### Swagger UI
+
+To provide a demonstration GUI for the API we can use
+[aiohttp-swagger](http://aiohttp-swagger.readthedocs.io/en/latest/).
+
+{% highlight python %}
+from aiohttp import web
+from aiohttp_swagger import setup_swagger
+ 
+app = web.Application()
+
+setup_swagger(app, swagger_from_file='swagger.yaml')
+{% endhighlight %}
+
+# Conclusion
+
+In this article we've developed a simple API that allows user to leave comments. We've learned
+how to use a combination of closure table and adjacency list models to work with tree-based data.
+The source code of the project is available in
+[the repository](https://github.com/vyacheslav-bezborodov/closure-table) on GitHub.
+
+# Links
+
+* http://technobytz.com/closure_table_store_hierarchical_data.html
+* https://www.postgresql.org/docs/9.5/static/textsearch.html
+* https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/
+
