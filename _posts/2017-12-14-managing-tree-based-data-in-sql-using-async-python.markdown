@@ -80,29 +80,104 @@ comment and its direct parent.
 Let's see how to fill out these tables by example. To create the first comment we're just putting
 a text into _comments_ table.
 
-| id | content                                                             |
-|----|---------------------------------------------------------------------|
-| 1  | Can anybody explain me the difference between Bitcoin and Etherium? |
+<style type="text/css">
+.comments-structure-tbl  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.comments-tbl  {border-collapse:collapse;border-spacing:0;border-color:#aaa;margin:0px auto;}
+.comments-tbl td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;}
+.comments-tbl th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;}
+.comments-tbl .tg-first{vertical-align:top}
+.comments-tree-tbl  {border-collapse:collapse;border-spacing:0;border-color:#999;border:none;margin:0px auto;}
+.comments-tree-tbl td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;}
+.comments-tree-tbl th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#fff;background-color:#26ADE4;}
+.comments-tree-tbl .tg-second{background-color:#D2E4FC;text-align:right;vertical-align:top}
+.comments-tree-tbl .tg-first{text-align:right;vertical-align:top}
+.comments-tree-tbl .tg-header{vertical-align:top}
+</style>
+
+<table class="comments-tbl">
+<tbody>
+	<tr>
+		<th class="tg-first">id</th>
+		<th class="tg-first">content</th>
+	</tr>
+	<tr>
+	    <td class="tg-first">1</td>
+	    <td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+</tbody>
+</table>
 
 We would also mark that comment as a parent (or ancestor) of itself.
 
-| id | ancestor_id | nearest_ancestor_id | descendant_id | depth |
-|---:|------------:|--------------------:|--------------:|------:|
-|  1 |           1 |                   1 |             1 |     0 |
+<table class="comments-tree-tbl">
+<tbody>
+	<tr>
+		<th class="tg-header">id</th>
+		<th class="tg-header">ancestor_id</th>
+		<th class="tg-header">nearest_ancestor_id</th>
+		<th class="tg-header">descendant_id</th>
+		<th class="tg-header">depth</th>
+	</tr>
+	<tr>
+	    <td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">0</td>
+	</tr>
+</tbody></table>
 
 To create a child comment we additionally put a relation with its grand parent (a non direct
 ancestor with non-zero depth). The tables are changed as shown below.
 
-| id | content                                                             |
-|----|---------------------------------------------------------------------|
-| 1  | Can anybody explain me the difference between Bitcoin and Etherium? |
-| 2  | I'm sure no one can.                                                |
+<table class="comments-tbl">
+<tbody>
+	<tr>
+		<th class="tg-first">id</th>
+		<th class="tg-first">content</th>
+	</tr>
+	<tr>
+		<td class="tg-first">1</td>
+		<td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+	<tr>
+		<td class="tg-first">2</td>
+		<td class="tg-first">I'm sure no one can.</td>
+	</tr>
+</tbody>
+</table>
 
-| id | ancestor_id | nearest_ancestor_id | descendant_id | depth |
-|---:|------------:|--------------------:|--------------:|------:|
-|  1 |           1 |                   1 |             1 |     0 |
-|  2 |           2 |                   2 |             2 |     1 |
-|  3 |           1 |                   1 |             2 |     1 |
+<table class="comments-tree-tbl">
+<tbody>
+	<tr>
+		<th class="tg-header">id</th>
+		<th class="tg-header">ancestor_id</th>
+		<th class="tg-header">nearest_ancestor_id</th>
+		<th class="tg-header">descendant_id</th>
+		<th class="tg-header">depth</th>
+	</tr>
+	<tr>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">0</td>
+	</tr>
+	<tr>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">1</td>
+	</tr>
+	<tr>
+		<td class="tg-second">3</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">2</td>
+		<td class="tg-second">1</td>
+	</tr>
+</tbody></table>
 
 Now we can see that the number of the relations and the depth are growing together. That's why
 closure table model has often been criticized. Obviously, in order to add an element with high
@@ -116,11 +191,7 @@ In many cases, the time of data selection is more significant than the insertion
 
 Back to our example. The full comment branch is looking like that.
 
-<style type="text/css">
-.tg2  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
-</style>
-
-<table class="tg2">
+<table class="comments-structure-tbl">
 	<tbody>
 		<tr>
 			<td>1</td>
@@ -128,30 +199,210 @@ Back to our example. The full comment branch is looking like that.
 		</tr>
 		<tr>
 			<td>2</td>
-		    <td>&nbsp; &nbsp; &nbsp; &nbsp; I'm sure no one can.</td>
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp; I'm sure no one can.</td>
 		</tr>
 		<tr>
 			<td>6</td>
-			<td>&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; Why are you so sure?</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Why are you so sure?</td>
 		</tr>
 		<tr>
 		    <td>7</td>
-		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; This is a blog about cooking!</td>
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a blog about cooking!</td>
 		</tr>
 		<tr>
 		    <td>3</td>
-		    <td>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; The same request.</td>
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The same request.</td>
 		</tr>
 		<tr>
 		    <td>4</td>
-		    <td>&nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No problem, I'll give an explanation paper later.</td>
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No problem, I'll give an explanation paper later.</td>
 		</tr>
 		<tr>
 		    <td>5</td>
-		    <td>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send me it by email then.</td>
+		    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send me it by email then.</td>
 		</tr>
 	</tbody>
 </table>
+
+Let's see how this branch will be represented in the tables.
+
+<table class="comments-tbl">
+<tbody>
+<tr>
+    <th class="tg-first">id</th>
+    <th class="tg-first">content</th>
+</tr>
+<tr>
+    <td class="tg-first">1</td>
+    <td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+</tr>
+<tr>
+    <td class="tg-first">2</td>
+    <td class="tg-first">I'm sure no one can.</td>
+</tr>
+<tr>
+    <td class="tg-first">3</td>
+    <td class="tg-first">The same request.</td>
+</tr>
+<tr>
+    <td class="tg-first">4</td>
+    <td class="tg-first">No problem, I'll give an explanation paper later.</td>
+</tr>
+<tr>
+    <td class="tg-first">5</td>
+    <td class="tg-first">Send me it by email then.</td>
+</tr>
+<tr>
+    <td class="tg-first">6</td>
+    <td class="tg-first">Why are you so sure?</td>
+</tr>
+<tr>
+    <td class="tg-first">7</td>
+    <td class="tg-first">This is a blog about cooking!</td>
+</tr>
+</tbody>
+</table>
+
+<table class="comments-tree-tbl">
+<tbody>
+<tr>
+    <th class="tg-header">id</th>
+    <th class="tg-header">ancestor_id</th>
+    <th class="tg-header">nearest_ancestor_id</th>
+    <th class="tg-header">descendant_id</th>
+    <th class="tg-header">depth</th>
+</tr>
+<tr>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">0</td>
+</tr>
+<tr>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">3</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">2</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">4</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">5</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">3</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">6</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">7</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">8</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">9</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">5</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">10</td>
+    <td class="tg-first">1</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">11</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">12</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">6</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">13</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">2</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">14</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">3</td>
+</tr>
+<tr>
+    <td class="tg-second">15</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">7</td>
+    <td class="tg-second">3</td>
+</tr>
+<tr>
+    <td class="tg-first">16</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">6</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">3</td>
+</tr>
+<tr>
+    <td class="tg-second">17</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">7</td>
+    <td class="tg-second">3</td>
+</tr>
+</tbody>
+</table>
+
+As it shown above, there is a root comment with zero depth within the branch and the max depth
+(or level) of comments is 3. Now let's see how we can deal with these tables in Python using
+SQLAlchemy.
+
+## SQL queries
+
+### Inserting a node to the tree
+
+
 
 Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
 
