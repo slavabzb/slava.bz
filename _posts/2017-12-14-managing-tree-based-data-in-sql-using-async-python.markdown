@@ -4,7 +4,7 @@ title:  "Managing tree-based data in SQL using async Python"
 date:   2017-12-14 12:20:45 +0500
 categories: python asyncio postgresql
 ---
-# This article details how async Python can be used to develop a simple API for working with tree-based data.
+# This article details how async Python can be used to develop a simple API for managing tree-based data in SQL.
 
 ## Intro
 
@@ -31,7 +31,7 @@ requirements.
 Let's define some technical properties of our system. We would use
 
 * async Python as a backend to handle many concurrent users,
-* PostgreSQL as a RDBMS to exploit its full text search,
+* PostgreSQL to exploit its full text search,
 * SQLAlchemy to construct SQL queries,
 * Swagger UI as a demonstration GUI for our API.
 
@@ -44,7 +44,7 @@ usually requires two tables to declare.
 import sqlalchemy as sa
  
 meta = sa.MetaData()
-	 
+ 
 comments = sa.Table(
     'comments_comments', meta,
     sa.Column('id', sa.Integer, primary_key=True),
@@ -61,7 +61,7 @@ comments_tree = sa.Table(
 )
 {% endhighlight %}
 
-So far we've declared the **comments** table to store user comments, and the **comments_tree**
+So far we have declared the **comments** table to store user comments, and the **comments_tree**
 table to store parent-child comment relationships. Each row in the second one is a relation
 between two comments. The columns have the following meaning:
 
@@ -70,7 +70,7 @@ between two comments. The columns have the following meaning:
 * _depth_ is a level describing how deep in the tree the comment is. All the root comments have zero depth.
 
 However, this closure table contains only a plain info about data relations and doesn't allow
-to restore the ordered tree structure. To make it possible we'd like to add an additional column.
+to restore the ordered tree structure. To make it possible we will add an additional column.
 
 * _nearest_ancestor_id_ is an id of the direct parent of a comment.
 
@@ -423,15 +423,15 @@ descendant = comments_tree.alias('descendant')
 nearest = comments_tree.alias('nearest')
  
 sel = sa.select([
-	descendant.c.ancestor_id,
-	nearest.c.nearest_ancestor_id,
-	ancestor.c.descendant_id,
-	nearest.c.depth + 1
+    descendant.c.ancestor_id,
+    nearest.c.nearest_ancestor_id,
+    ancestor.c.descendant_id,
+    nearest.c.depth + 1
 ]).where(sa.and_(
-	descendant.c.descendant_id == parent_id,
-	ancestor.c.ancestor_id == comment_id,
-	nearest.c.ancestor_id == parent_id,
-	nearest.c.descendant_id == parent_id,
+    descendant.c.descendant_id == parent_id,
+    ancestor.c.ancestor_id == comment_id,
+    nearest.c.ancestor_id == parent_id,
+    nearest.c.descendant_id == parent_id,
 ))
 
 ins = comments_tree.insert().from_select([
@@ -446,20 +446,20 @@ That code produces the following SQL query.
 
 {% highlight sql %}
 INSERT INTO comments_tree
-	(ancestor_id, nearest_ancestor_id, descendant_id, depth)
+    (ancestor_id, nearest_ancestor_id, descendant_id, depth)
 SELECT
-	descendant.ancestor_id,
-	nearest.nearest_ancestor_id,
-	ancestor.descendant_id,
-	nearest.depth + 1
+    descendant.ancestor_id,
+    nearest.nearest_ancestor_id,
+    ancestor.descendant_id,
+    nearest.depth + 1
 FROM
-	comments_tree AS descendant,
-	comments_tree AS nearest,
-	comments_tree AS ancestor
+    comments_tree AS descendant,
+    comments_tree AS nearest,
+    comments_tree AS ancestor
 WHERE descendant.descendant_id = PARENT_ID
-	AND ancestor.ancestor_id = COMMENT_ID
-	AND nearest.ancestor_id = PARENT_ID
-	AND nearest.descendant_id = PARENT_ID
+    AND ancestor.ancestor_id = COMMENT_ID
+    AND nearest.ancestor_id = PARENT_ID
+    AND nearest.descendant_id = PARENT_ID
 {% endhighlight %}
 
 ### Selecting a sub-tree
@@ -470,13 +470,13 @@ Selecting the whole comment branch can be done like that.
 import sqlalchemy as sa
  
 join = comments.join(
-	comments_tree, comments.c.id == comments_tree.c.descendant_id
+    comments_tree, comments.c.id == comments_tree.c.descendant_id
 )
 
 sel = sa.select([
-	comments_tree.c.nearest_ancestor_id,
-	comments.c.id,
-	comments.c.content,
+    comments_tree.c.nearest_ancestor_id,
+    comments.c.id,
+    comments.c.content,
 ]).select_from(join).where(comments_tree.c.ancestor_id == comment_id)
 {% endhighlight %}
 
@@ -484,9 +484,9 @@ The corresponding SQL query.
 
 {% highlight sql %}
 SELECT
-	comments_tree.nearest_ancestor_id,
-	comments_comments.id,
-	comments_comments.content
+    comments_tree.nearest_ancestor_id,
+    comments_comments.id,
+    comments_comments.content
 FROM
     comments_comments
 JOIN comments_tree ON comments_comments.id = comments_tree.descendant_id
@@ -509,12 +509,12 @@ remove = comments_tree.alias('remove')
 descendant = comments_tree.alias('descendant')
  
 sel = sa.select([remove.c.descendant_id, remove.c.id]).where(sa.and_(
-	sa.or_(
-		remove.c.ancestor_id == descendant.c.descendant_id,
-		remove.c.nearest_ancestor_id == descendant.c.descendant_id,
-		remove.c.descendant_id == descendant.c.descendant_id,
-	),
-	descendant.c.ancestor_id == comment_id,
+    sa.or_(
+        remove.c.ancestor_id == descendant.c.descendant_id,
+        remove.c.nearest_ancestor_id == descendant.c.descendant_id,
+        remove.c.descendant_id == descendant.c.descendant_id,
+    ),
+    descendant.c.ancestor_id == comment_id,
 ))
 {% endhighlight %}
 
@@ -522,15 +522,15 @@ SQL query.
 
 {% highlight sql %}
 SELECT
-	remove.descendant_id,
+    remove.descendant_id,
     remove.id
 FROM
-	comments_tree AS remove,
-	comments_tree AS descendant
+    comments_tree AS remove,
+    comments_tree AS descendant
 WHERE (remove.ancestor_id = descendant.descendant_id
     OR remove.nearest_ancestor_id = descendant.descendant_id
-	OR remove.descendant_id = descendant.descendant_id)
-	AND descendant.ancestor_id = COMMENT_ID
+    OR remove.descendant_id = descendant.descendant_id)
+    AND descendant.ancestor_id = COMMENT_ID
 {% endhighlight %}
 
 That query will select all the ids of  the comments (the first column) and all the ids of the
@@ -557,12 +557,12 @@ import aiopg.sa
 from aiohttp import web
  
 async def setup_pg(app):
-	engine = await aiopg.sa.create_engine(DATABASE)
-	app['db'] = engine
+    engine = await aiopg.sa.create_engine(DATABASE)
+    app['db'] = engine
 
 async def close_pg(app):
-	app['db'].close()
-	await app['db'].wait_closed()
+    app['db'].close()
+    await app['db'].wait_closed()
 
 app = web.Application()
 
@@ -579,7 +579,7 @@ import sqlalchemy as sa
 from sqlalchemy.sql.expression import func
  
 sel = sa.select([comments]).where(comments.c.content.match(
-	sa.cast(func.plainto_tsquery('query text'), sa.TEXT)
+    sa.cast(func.plainto_tsquery('query text'), sa.TEXT)
 ))
 {% endhighlight %}
 
@@ -587,14 +587,14 @@ That will produce the following SQL query.
 
 {% highlight sql %}
 SELECT
-	comments_comments.id,
+    comments_comments.id,
     comments_comments.content
 FROM
-	comments_comments
+    comments_comments
 WHERE
-	comments_comments.content @@ to_tsquery(
-		CAST(plainto_tsquery('query text') AS TEXT)
-	)
+    comments_comments.content @@ to_tsquery(
+        CAST(plainto_tsquery('query text') AS TEXT)
+    )
 {% endhighlight %}
 
 This is a basic full-text search usage. For more complex examples see the links below.
@@ -628,7 +628,7 @@ The source code of the project is available in
 
 # Links
 
-* http://technobytz.com/closure_table_store_hierarchical_data.html
-* https://www.postgresql.org/docs/9.5/static/textsearch.html
-* https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/
+* <http://technobytz.com/closure_table_store_hierarchical_data.html>
+* <https://www.postgresql.org/docs/9.5/static/textsearch.html>
+* <https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/>
 
