@@ -185,15 +185,15 @@ ancestor with non-zero depth). The tables are changed as shown below.
 </table>
 <br />
 
-Now we can see that the number of the relations and the depth are growing together. That's why
-closure table model has often been criticized. Obviously, in order to add an element with high
-depth value to the tree, we'll have to store lots of relations of the element and all its
+Now we can see that the number of the relations and the depth are growing together. This is why
+the closure table model has often been criticized. Obviously, in order to add an element with high
+depth value to the tree, we will have to store lots of relations of the element and all its
 ancestors.
 
-But it's not as bad as it seems. In a real case adding an element with a depth of 200 or 1000 may
-not affect the performance of a server in serious way. In fact, such a situation probably will
-never happen (except we're commenting the news about our national team losing a soccer match).
-In many cases, the time of data selection is more significant than the insertion time.
+But it is not as bad as it seems. In a real case adding an element with a depth of 200 or 1000 may
+not affect the performance of a server in a serious way. In fact, such a situation probably will
+never happen (except when we are commenting the news about our national team losing a soccer
+match). In many cases, the time of data selection is more significant then the insertion time.
 
 Back to our example. The full comment branch is looking like that.
 
