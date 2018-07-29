@@ -6,13 +6,21 @@ categories: python algorithms
 ---
 # Are you smart enough to work in Yandex?
 
+List of problems
+
+[Sum of diagonals](#sum-of-diagonals)
+
 ## Sum of diagonals
 
-Find the sum of the diagonals of the squared matrix.
+Find the sum of the diagonals of the square matrix.
 
 ---
 
-Let's consider a squared matrix M.
+Let's consider a square matrix of size `N`. In order to solve the problem, we need to sum all the diagonal elements. We call an element *diagonal* if it's row index and column index are the same.
+
+![alt text][/assets/img/matrix.png]
+
+Obviously, our algorithm has to take O(n) time to find the sum.
 
 ```python
 def get_diagonal_sum(matrix):
