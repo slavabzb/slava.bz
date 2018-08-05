@@ -20,11 +20,7 @@ In order to solve the problem, we need to sum all the diagonal elements. We call
 
 The first thing we should do is to understand how to process all the diagonal elements using only one loop iteration. For instance, let's consider a square matrix of size `4`.
 
-<<<<<<< HEAD
 ![Square matrix of size 4][/assets/img/matrix-4x4.png]
-=======
-![Square matrix of size 2](/assets/img/matrix-2x2.png)
->>>>>>> 1f2cfc661e2c757dca29bb424b978f0985f7d01b
 
 As we can see, in that simple case all the elements are diagonal, e.g. the sum is (1 + 6 + 11 + 16) + (4 + 7 + 10 + 13) = 68. The indices (X, Y) of the diagonal 1-6-11-16 are changing together from 1 up to 4. For the other diagonal 4-7-10-13 row X-index is changing from 1 up to 4, whereas column Y-index is changing from 4 down to 1. Keeping this in mind, let's try to build the first version of the algorithm.
 
