@@ -8,9 +8,43 @@ categories: python algorithms
 
 List of problems
 
+* [FIFO queue](#fifo-queue)
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## FIFO queue
+
+Create a FIFO queue using two stacks.
+
+---
+
+FIFO queue is a queue where the oldest (first) item is processed first. In Python we have no special class for stacks, we can use lists instead.
+
+The idea is to put incoming elements in the first stack. When the element is aquired, we have to turn the first stack and return an item from top of the second stack.
+
+We can create a simple class that implements queue interface.
+
+```python
+class FifoQueue:
+    def __init__(self):
+        self._instack = []
+        self._outstack = []
+
+    def enqueue(self, item):
+        self._instack.append(item)
+
+    def dequeue(self):
+        if not self._outstack:
+            self._turn()
+        return self._outstack.pop()
+
+    def _turn(self):
+        for _ in range(len(self._instack)):
+            self._outstack.append(self._instack.pop())
+```
+
+The usage of the `FifoQueue` class is simple. We have only 2 public methods. When we need to store data, the method `enqueue` is used. When we need stored data back, we call the `dequeue` method.
 
 ## Palindrome
 
