@@ -8,7 +8,66 @@ categories: python algorithms
 
 List of problems
 
-[Sum of diagonals](#sum-of-diagonals)
+* [Reverse linked list](#reverse-linked-list)
+* [Sum of diagonals](#sum-of-diagonals)
+
+## Reverse linked list
+
+Reverse given linked list.
+
+---
+
+For that problem we need to define a new data type for linked list. For example, it may looks like the following.
+
+```python
+from typing import Any, NoReturn, Optional
+
+
+class Node:
+    def __init__(self, value: Any, next: Optional['Node']) -> NoReturn:
+        self.value = value
+        self.next = next
+```
+
+Class `Node` defines a type for an item of the linked list. Each node has a payload (value of any type) and a pointer to the next node (the `next` attribute). If the node has no next node, we call it a *tail* node.
+
+Using this data structure, a regular python list `[1, 2, 3, 4, 5]` can be represented like that.
+
+```python
+tail = Node(5, None)
+z = Node(4, tail)
+y = Node(3, z)
+x = Node(2, y)
+head = Node(1, x)
+```
+
+The problem is to reverse given linked list, i.e. make tail node a head for the new linked list.
+
+Usually we process such structures using iteration. For example, a function that prints linked list can be written like that.
+
+```python
+def print_list(head: Node):
+    current = head
+    while current:
+        print(current.value)
+        current = current.next
+```
+
+Using such iteration pattern, we can walk through the list and swap the pointers of the two neighbour nodes.
+
+```python
+def reverse(head: Node) -> Node:
+    previous = None
+    current = head
+    while current:
+        tmp = current.next
+        current.next = previous
+        previous = current
+        current = tmp
+    return previous
+```
+
+This algorithm makes changes *in-place*, i.e. it modifies an existing list. We can accept such behaviour for the sake of taking O(n) time and requiring no additional memory.
 
 ## Sum of diagonals
 
