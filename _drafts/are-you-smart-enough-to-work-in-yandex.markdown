@@ -20,9 +20,11 @@ In order to solve the problem, we need to sum all the diagonal elements. We call
 
 The first thing we should do is to understand how to process all the diagonal elements using only one loop iteration. For instance, let's consider a square matrix of size `4`.
 
-![Square matrix of size 4][/assets/img/matrix-4x4.png]
+<p align="center">
+<img src="/assets/img/matrix-4x4.png" alt="Square matrix of size 4"  width="400px"/>
+</p>
 
-As we can see, in that simple case all the elements are diagonal, e.g. the sum is (1 + 6 + 11 + 16) + (4 + 7 + 10 + 13) = 68. The indices (X, Y) of the diagonal 1-6-11-16 are changing together from 1 up to 4. For the other diagonal 4-7-10-13 row X-index is changing from 1 up to 4, whereas column Y-index is changing from 4 down to 1. Keeping this in mind, let's try to build the first version of the algorithm.
+As we can see, in that case the sum is (1 + 6 + 11 + 16) + (4 + 7 + 10 + 13) = 68. The indices (X, Y) of the diagonal 1-6-11-16 are changing together from 1 up to 4. For the other diagonal 4-7-10-13 row X-index is changing from 1 up to 4, whereas column Y-index is changing from 4 down to 1. Keeping this in mind, let's try to build the first version of the algorithm.
 
 ```python
 def get_diagonal_sum(matrix):
@@ -44,11 +46,13 @@ s = get_diagonal_sum(matrix)
 print(s)
 ```
 
-For our sample matrix this algorithm returns 68 and takes O(n) time. The key to solve this problem is to realize that the algorithm doesn't work for any matrices. Let's consider another example.
+For our sample matrix this algorithm returns 68 and takes O(n) time. Let's consider another example.
 
-![Square matrix of size 3](/assets/img/matrix-3x3.png)
+<p align="center">
+<img src="/assets/img/matrix-3x3.png" alt="Square matrix of size 3"  width="400px"/>
+</p>
 
-For that matrix the algorithm prints 30 instead of 25: central cell with value 5 is processed twice. Instead of making conditional check each loop iteration, we can subtract central cell before the result is returned.
+For that matrix the algorithm returns 30 instead of 25: central cell with value 5 is processed twice. Instead of making conditional check each loop iteration, we can subtract central cell before the result is returned.
 
 ```python
 def get_diagonal_sum(matrix):
