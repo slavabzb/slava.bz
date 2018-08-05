@@ -8,8 +8,39 @@ categories: python algorithms
 
 List of problems
 
+* [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## Palindrome
+
+Check wheather a string is a palindrome or not. Non-alphanumeric characters are ignored. Case insensitive.
+
+---
+
+A string is called *a palindrome* if the string read from left to right is equal to the string read from right to left. For example, ignoring the difference between uppercase and lowercase letters and skipping non-alphanumeric characters, the strign `Abcba!` is a palindrome, while the string `Hello` is not.
+
+Whereas there is a beautiful recursive solution, it takes additional memory per each recursion call and is not so effective as an iteration-based one.
+
+```python
+def is_palindrome(s):
+    i = 0
+    j = (len(s) or 1) - 1
+    while i != j:
+        if not s[i].isalnum():
+            i += 1
+            continue
+        if not s[j].isalnum():
+            j -= 1
+            continue
+        if s[i].lower() != s[j].lower():
+            return False
+        i += 1
+        j -= 1
+    return True
+```
+
+This algorithm takes O(n) time and no additional memory.
 
 ## Reverse linked list
 
