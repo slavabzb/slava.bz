@@ -8,10 +8,42 @@ categories: python algorithms
 
 List of problems
 
+* [Set difference](#set-difference)
 * [FIFO queue](#fifo-queue)
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## Set difference
+
+`A` and `B` are sorted lists. Find elements contained in `A` and not contained in `B`.
+
+---
+
+The problem is to find a set difference between `A` and `B`, but we have lists instead of sets. The lists are sorted, we can use that to find the result effectively.
+
+```python
+def set_diff(a, b):
+    i = 0
+    j = 0
+    result = []
+    while i < len(a) and j < len(b):
+        if a[i] < b[j]:
+            result.append(a[i])
+            i += 1
+        elif a[i] == b[j]:
+            i += 1
+        else:
+            j += 1
+    result.extend(a[i:])
+    return result
+```
+
+We start processing `A` and `B` from the beginnig. We compare current elements. If we find that an element from `A` is less, we will include it to the answer. Otherwise we move current positions `i` and `j` forward.
+
+The loop terminates if all the elements from `A` or `B` were processed. If `B` was shorter, we have to add to the answer the rest elements from `A` starting from the current position.
+
+This algorithm takes O(n+k) time and uses no additional memory.
 
 ## FIFO queue
 
