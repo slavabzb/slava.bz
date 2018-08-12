@@ -8,15 +8,55 @@ categories: python algorithms
 
 List of problems
 
+* [Count pairs](#count-pairs)
 * [Set difference](#set-difference)
 * [FIFO queue](#fifo-queue)
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
 
+## Count pairs
+
+`A` and `B` are sorted arrays. Count the pairs for which the equation `a + b = x` is held.
+
+---
+
+In order to solve the problem effectively, we have to scan both arrays in the same loop. The first array (`A`) we scan from the beginning down to the end (forward scan using `i` as an index), the second one (`B`) - from the end up to the beginning (backward scan using `j` as an index). There are three possible cases.
+
+1. `A[i] + B[j] < x` - the sum is less then `x` - we increase the sum by increasing the index `i` (move forward along the `A` array).
+2. `A[i] + B[j] > x` - the sum is more then `x` - we decrease the sum by decreasing the index `j` (move backward along the `B` array).
+2. `A[i] + B[j] = x` - the sum is equal to `x` - we increase a count of found pairs. The number of increasing depends on the number of the same values placed together in `A` or `B` (sequences of the save values).
+
+```python
+def get_count(a, b, x):
+    i = 0
+    j = len(b) - 1
+    total = 0
+    while i < len(a) and j >= 0:
+        if a[i] + b[j] < x:
+            i += 1
+        elif a[i] + b[j] > x:
+            j -= 1
+        else:
+            i += 1
+            count_a = 1
+            while i < len(a) and a[i] == a[i - 1]:
+                count_a += 1
+                i += 1
+            j -= 1
+            count_b = 1
+            while j >= 0 and b[j] == b[j + 1]:
+                count_b += 1
+                j -= 1
+            total += count_a * count_b
+    return total
+```
+
+The algorithm takes O(n+k) time and O(1) additional memory.
+
 ## Set difference
 
-`A` and `B` are sorted lists. Find elements contained in `A` and not contained in `B`.
+`A` and `B` are sorted arrays. Find elements contained in `A` and not contained in `B`.
 
 ---
 
@@ -43,7 +83,7 @@ We start processing `A` and `B` from the beginnig. We compare current elements. 
 
 The loop terminates if all the elements from `A` or `B` were processed. If `B` was shorter, we have to add to the answer the rest elements from `A` starting from the current position.
 
-This algorithm takes O(n+k) time and uses no additional memory.
+This algorithm takes O(n+k) time and O(1) additional memory.
 
 ## FIFO queue
 
@@ -106,7 +146,7 @@ def is_palindrome(s):
     return True
 ```
 
-This algorithm takes O(n) time and no additional memory.
+This algorithm takes O(n) time and O(1) additional memory.
 
 ## Reverse linked list
 
@@ -164,7 +204,7 @@ def reverse(head: Node) -> Node:
     return previous
 ```
 
-This algorithm makes changes *in-place*, i.e. it modifies an existing list. We can accept such behaviour for the sake of taking O(n) time and requiring no additional memory.
+This algorithm makes changes *in-place*, i.e. it modifies an existing list. We can accept such behaviour for the sake of taking O(n) time and requiring O(1) additional memory.
 
 ## Sum of diagonals
 
@@ -225,4 +265,4 @@ def get_diagonal_sum(matrix):
     return s
 ```
 
-As you can see, now the algorithm returns correct result. This solution takes O(n) time and works for any other edge cases, e.g. matrices of 1 element or empty matrices.
+As you can see, now the algorithm returns correct result. This solution takes O(n) time and O(1) additional memory. The algorithm works for any other edge cases, e.g. matrices of 1 element or empty matrices.
