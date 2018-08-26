@@ -8,6 +8,7 @@ categories: python algorithms
 
 List of problems
 
+* [Two maximums](#two-maximums)
 * [Zip ints](#zip-ints)
 * [Count pairs](#count-pairs)
 * [Set difference](#set-difference)
@@ -15,6 +16,36 @@ List of problems
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## Two maximums
+
+Find two maximums in unsorted array.
+
+---
+
+We can simply scan the array and check each value. Don't forget about corner cases.
+
+```python
+def get_maxs(values):
+    max1 = max2 = None
+    if not values:
+        return max1, max2
+
+    max1 = values[0]
+    if len(values) < 2:
+        return max1, max2
+
+    max2 = values[1]
+    for value in values[2:]:
+        if value > max1:
+            max1 = value
+        elif value > max2:
+            max2 = value
+
+    return max1, max2
+```
+
+This algorithm takes O(n) time and O(1) additional memory.
 
 ## Zip ints
 
