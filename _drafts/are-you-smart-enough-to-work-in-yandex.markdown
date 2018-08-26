@@ -8,12 +8,48 @@ categories: python algorithms
 
 List of problems
 
+* [Zip ints](#zip-ints)
 * [Count pairs](#count-pairs)
 * [Set difference](#set-difference)
 * [FIFO queue](#fifo-queue)
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## Zip ints
+
+For given array of non repeatable integers print a string of shortened sequences. For example, for array `[4, 1, 2, 6, 3, 9, 7]` the output is `"1-4,6-7,9"`.
+
+---
+
+In order to find the sequences to compress we would like to have the source array sorted. In a sequence for the previous element and for the current element the equation `current = previous + 1` is held.
+
+```python
+def zip_ints(values):
+    if not values:
+        return ''
+
+    sorted_values = sorted(values)
+    begin = end = prev = sorted_values[0]
+
+    zipped = []
+    for value in sorted_values[1:]:
+        if value == prev + 1:
+            end = value
+        else:
+            zipped.append(f'{begin}-{end}')
+            begin = end = value
+        prev = value
+
+    if begin == end:
+        zipped.append(f'{begin}')
+    else:
+        zipped.append(f'{begin}-{end}')
+
+    return ','.join(zipped)
+```
+
+In Python built-in `sorted` method uses the [Timsort](https://en.wikipedia.org/wiki/Timsort) algorithm to sort sequences. In the worst-case it takes O(n log n) time and O(n) additional space. Iteration through the sorted array takes O(n) time, thus the total time complexity of this algorithm is O(n log n).
 
 ## Count pairs
 
