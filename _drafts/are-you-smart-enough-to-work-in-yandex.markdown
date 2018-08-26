@@ -8,6 +8,7 @@ categories: python algorithms
 
 List of problems
 
+* [Vertical line](#vertical-line)
 * [Two maximums](#two-maximums)
 * [Zip ints](#zip-ints)
 * [Count pairs](#count-pairs)
@@ -16,6 +17,34 @@ List of problems
 * [Palindrome](#palindrome)
 * [Reverse linked list](#reverse-linked-list)
 * [Sum of diagonals](#sum-of-diagonals)
+
+## Vertical line
+
+For given set of two-dimensional points check if a vertical line deviding the points symmetrically exists or not.
+
+---
+
+A pair of points `(X1, Y1)` and `(X2, Y2)` can be devided by a vertical line symmetrically if the equations `X1 + X2 = C` and `Y1 = Y2` are held. If we find the other pair for which `Y3 = Y4` is true, but `X3 + X4 != C`, we cannot devide this set of points by a vertical line symmetrically. And finnaly, if we can't determine the constant `C`, we can't devide the set too.
+
+```python
+def check(points):
+    c = None
+    seen = {}
+    for x, y in points:
+        if y in seen:
+            if c:
+                if x + seen[y] != c:
+                    return False
+            else:
+                c = x + seen[y]
+        else:
+            seen[y] = x
+    if c is None:
+        return False
+    return True
+```
+
+This algorithm takes O(n) time, but uses additional memory. In the worst case, when all the `Y` are different, we would have a full copy of the source set of points requiring O(n) additional memory.
 
 ## Two maximums
 
