@@ -6,7 +6,16 @@ categories: python algorithms
 ---
 # Are you smart enough to work in Yandex?
 
-List of problems
+Yandex is a large IT company. This was the first time I tried to attend it. I couldn't even imagine that the interview consists of four sessions, each session is one hour long. You have to talk to four different people in four different places and solve lots of tasks and answer the questions. In Yandex they used to write the codes on blank papers or just on the walls - this is very convinient. There are two major requirements you should carry about.
+
+- Use an existing programming language to write your codes. You can use any language you prefer, but it can't be a pseudo language.
+- Your codes should be free of any compiler / interpreter errors.
+
+The recipe of success is handling edge cases. The more problems you solve and the less syntax and / or logical mistakes you made, the higher you are.
+
+In Yandex they believe that you have to have basic algorithmic knowledges. If you do, you can do anything else. I've failed my first attempt to join Yandex and decided to share some of the problems I've faced during the interview.
+
+The list of problems.
 
 * [Vertical line](#vertical-line)
 * [Two maximums](#two-maximums)
