@@ -6,14 +6,14 @@ categories: python algorithms
 ---
 # Are you smart enough to work in Yandex?
 
-Yandex is a large IT company. This was the first time I tried to attend it. I couldn't even imagine that the interview consists of four sessions, each session is one hour long. You have to talk to four different people in four different places and solve lots of tasks and answer the questions. In Yandex they used to write the codes on blank papers or just on the walls - this is very convinient. There are two major requirements you should carry about.
+Yandex is a large IT company. It was the first time I tried to attend it. I couldn't even imagine that the interview consists of four sessions, each session is about one hour. You have to talk with four different people in four different places and solve lots of problems and answer the questions. In Yandex they used to write the codes on blank papers or just on the walls - this is very convinient. There are two major requirements you should carry about.
 
 - Use an existing programming language to write your codes. You can use any language you prefer, but it can't be a pseudo language.
 - Your codes should be free of any compiler / interpreter errors.
 
-The recipe of success is handling edge cases. The more problems you solve and the less syntax and / or logical mistakes you made, the higher you are.
+The recipe of success is handling edge cases. The more problems you solve and the less syntax and / or logical mistakes you make, the higher you are.
 
-In Yandex they believe that you have to have basic algorithmic knowledges. If you do, you can do anything else. I've failed my first attempt to join Yandex and decided to share some of the problems I've faced during the interview.
+In Yandex they believe that you have to have basic algorithmic knowledges. If you do, you can do anything else. I've failed my first attempt to join Yandex and decided to share some of the problems I faced during the interview.
 
 The list of problems.
 
@@ -33,7 +33,7 @@ For given set of two-dimensional points check if a vertical line deviding the po
 
 ---
 
-A pair of points `(X1, Y1)` and `(X2, Y2)` can be devided by a vertical line symmetrically if the equations `X1 + X2 = C` and `Y1 = Y2` are held. If we find the other pair for which `Y3 = Y4` is true, but `X3 + X4 != C`, we cannot devide this set of points by a vertical line symmetrically. And finnaly, if we can't determine the constant `C`, we can't devide the set too.
+A pair of points `(X1, Y1)` and `(X2, Y2)` can be devided by a vertical line symmetrically if the equations `X1 + X2 = C` and `Y1 = Y2` are held. If we find the other pair for which `Y3 = Y4` is true, but `X3 + X4 != C`, we cannot devide this set of points by a vertical line symmetrically. And finnaly, if we don't determine the constant `C`, we can't devide the set too.
 
 ```python
 def check(points):
@@ -53,7 +53,7 @@ def check(points):
     return True
 ```
 
-This algorithm takes O(n) time, but uses additional memory. In the worst case, when all the `Y` are different, we would have a full copy of the source set of points requiring O(n) additional memory.
+This algorithm takes O(n) time, but uses additional memory. In the worst case, when all the `Y`s are different, we will have a full copy of the source set of points requiring O(n) additional memory.
 
 ## Two maximums
 
@@ -91,7 +91,7 @@ For given array of non repeatable integers print a string of shortened sequences
 
 ---
 
-In order to find the sequences to compress we would like to have the source array sorted. In a sequence for the previous element and for the current element the equation `current = previous + 1` is held.
+In order to find the sequences to compress it's better to have the source array sorted. In a sequence for the previous element and for the current element the equation `current = previous + 1` is held.
 
 ```python
 def zip_ints(values):
@@ -126,7 +126,7 @@ In Python built-in `sorted` method uses the [Timsort](https://en.wikipedia.org/w
 
 ---
 
-In order to solve the problem effectively, we have to scan both arrays in the same loop. The first array (`A`) we scan from the beginning down to the end (forward scan using `i` as an index), the second one (`B`) - from the end up to the beginning (backward scan using `j` as an index). There are three possible cases.
+To solve the problem effectively, we have to scan both arrays in the same loop. The first array (`A`) we scan from the beginning down to the end (forward scan using `i` as an index), the second one (`B`) - from the end up to the beginning (backward scan using `j` as an index). There are three possible cases.
 
 1. `A[i] + B[j] < x` - the sum is less then `x` - we increase the sum by increasing the index `i` (move forward along the `A` array).
 2. `A[i] + B[j] > x` - the sum is more then `x` - we decrease the sum by decreasing the index `j` (move backward along the `B` array).
@@ -184,9 +184,9 @@ def set_diff(a, b):
     return result
 ```
 
-We start processing `A` and `B` from the beginnig. We compare current elements. If we find that an element from `A` is less, we will include it to the answer. Otherwise we move current positions `i` and `j` forward.
+We start processing `A` and `B` from the beginnig. We compare current elements. If we find, that an element from `A` is less, we will include it to the answer. Otherwise we move current positions `i` and `j` forward.
 
-The loop terminates if all the elements from `A` or `B` were processed. If `B` was shorter, we have to add to the answer the rest elements from `A` starting from the current position.
+The loop terminates if all the elements from `A` or `B` are processed. If `B` is shorter, we have to add to the answer the rest elements from `A` starting from the current position.
 
 This algorithm takes O(n+k) time and O(1) additional memory.
 
@@ -229,7 +229,7 @@ Check wheather a string is a palindrome or not. Non-alphanumeric characters are 
 
 ---
 
-A string is called *a palindrome* if the string read from left to right is equal to the string read from right to left. For example, ignoring the difference between uppercase and lowercase letters and skipping non-alphanumeric characters, the strign `Abcba!` is a palindrome, while the string `Hello` is not.
+A palindrome - reading a word from left to right is equal reading a word from right to left. For example, ignoring the difference between uppercase and lowercase letters and skipping non-alphanumeric characters, the string `Abcba!` is a palindrome, while the string `Hello` is not.
 
 Whereas there is a beautiful recursive solution, it takes additional memory per each recursion call and is not so effective as an iteration-based one.
 
@@ -259,7 +259,7 @@ Reverse given linked list.
 
 ---
 
-For that problem we need to define a new data type for linked list. For example, it may looks like the following.
+For that problem we need to define a new data type for linked list. For example, it may look like the following.
 
 ```python
 from typing import Any, NoReturn, Optional
@@ -285,7 +285,7 @@ head = Node(1, x)
 
 The problem is to reverse given linked list, i.e. make tail node a head for the new linked list.
 
-Usually we process such structures using iteration. For example, a function that prints linked list can be written like that.
+Usually we process such structures using iteration. For example, a function that prints linked list can be written like this.
 
 ```python
 def print_list(head: Node):
