@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Are you smart enough to work in Yandex?"
-date:   2017-12-14 12:20:45 +0500
+date:   2018-08-30 12:41:38 +0300
 categories: python algorithms
 ---
 # Are you smart enough to work in Yandex?
