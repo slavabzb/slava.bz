@@ -74,8 +74,12 @@ def get_maxs(values):
         return max1, max2
 
     max2 = values[1]
+    if max1 < max2:
+        max1, max2 = max2, max1
+
     for value in values[2:]:
         if value > max1:
+            max2 = max1
             max1 = value
         elif value > max2:
             max2 = value
@@ -105,8 +109,11 @@ def zip_ints(values):
     for value in sorted_values[1:]:
         if value == prev + 1:
             end = value
-        else:
+        elif begin < end:
             zipped.append(f'{begin}-{end}')
+            begin = end = value
+        else:
+            zipped.append(f'{begin}')
             begin = end = value
         prev = value
 
