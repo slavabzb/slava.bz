@@ -6,6 +6,14 @@ categories: programming trends
 ---
 # HighLoad++ 2018
 
+![](https://conf.python.ru/i/python_conf/2018/org_2018/hl.jpg)
+
+This year [HighLoad++](https://www.highload.ru/) was held in Skolkovo, Moscow.
+
+![](https://www.highload.ru/i/highload/2018/general/bg-skolkovo.jpg)
+
+This is my short notes about some of the conference reports. Abstracts of the other reports can be found [here](http://www.highload.ru/moscow/2018/abstracts).
+
 * [What do we know about microservices?](#what-do-we-know-about-microservices)
 * [Difficulties of containerized applications and microservices](#difficulties-of-containerized-applications-and-microservices)
 * [A way to realize Data Discovery in microservice architecture](a-way-to-realize-data-discovery-in-microservice-architecture)
