@@ -78,8 +78,37 @@ If the systems department is to be an integral part of your business and thus co
 
 In general it is a far better to get the balance right and define requirements in sufficient detail to enable the designers and implementors to make a good job of it. Mistakes **will** occur later, but prototyping and iteration based on a good starting poing are cost-effective and timely ways of achieving the desired result.
 
-Logical System Design
-Dataflow Diagrams
-Realtime Modelling
-Physical System Design
-When to Use What
+## Logical System Design
+
+## Dataflow Diagrams
+
+The datastore represents a persistent data storage capability and is expressed in terms of entities, attributes and relationships from the data model of the system. The dataflow shows a movement of data (again in terms of entities, attributes and relationships) between two processes, between a process and a datastore, or between a process and an external entity.
+
+Dataflows are called balanced if they are into and out of processes that are not further decomposed. The task of decomposing a process and balancing its dataflows, by assigning them to its sub-processes, is a top-down design activity which, if taken to a low enough level of detail, can often form an adequate specification of a process from which final construction can take place (using a computer language, manual procedure, electronic circuit, etc.).
+
+The dataflow diagramming technique is, like many others, an iterative, evolutionary approach to arriving at the final result. Many mistakes will be made and repaired along the way to a completed system definition.
+
+## Realtime Modelling
+
+Realtime modelling can be done using state transition diagramming, which is another useful technique for modelling systems where it is important to know what happens when different events occur, dependent on the state of the system. These tend to be critical control systems, so it is important to be able to check them out with the user and using various quality checks. Realtime sub-systems are an essential component of many computer systems today, and become more and more important whenever process control and interactive graphics user interfaces are considered.
+
+State transition diagrams give us the ability to model a system from the viewpoint of the system being in a given state, going through a transition to another state following an event, and possibly carrying out some consequential process. They also allow us to model interrelated realtime sub-systems and handle queues and concurrent processes, and are particularly appropriate for process control systems and interactive graphical user interfaces.
+
+## Physical System Design
+
+Designing a system to a level of detail necessary for it to be built successfully demands design work to be done with knowledge of the physical implementation language, machinery or other implementation vehicle. The goal of the functional design activity is to design computerized systems that are:
+- relevant,
+- usable, and
+- flexible.
+
+Techniques such as decomposition, dependency and dataflow diagrams provide a good starting point for a physical design, and decomposition, in the form of a structure chart, can be used to record the results of a physical design for a procedural computer programming language.
+
+## A Final Analogy
+
+As a final reminder about the importance of proper analysis and preparation throughout all the stages of creating information systems, let us consider the analogy of decorating a room in your home.
+
+It is spring and you get the urge to redecorate, so you rush out to the hardware shop and buy lots of lovely paint, wallpaper, new paint brushes, and so on. Then you come home and at least you have the sense to move the furniture out of the room or at least cover it up while you are working. A quick cup of tea (after all that rushing about) and you set to with the paint brush (it really is such fun painting you can't wait to get to work). Result: you run out of paint, or you have loads left over, it is badly done, the cracks and the holes and the old flaking paint still show through, your children hate the colour!
+
+The 'fun' bit at the end will only be successful if you get the requirements and the design right - what colour, what type of paint, how much, will you still like the pattern in three years' time? Then you must construct the system properly. Decide on the order of the preparation work: sanding the paintwork, preparing the walls, washing them, filling the cracks, and so on. Work out the order for the actual physical design: which bit will be painted first, how many coats of paint, how long between coats, and so on.
+
+Now you can actually start coding (painting).
