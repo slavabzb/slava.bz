@@ -1,0 +1,162 @@
+![](https://cdn.worldvectorlogo.com/logos/game-of-thrones.svg)
+
+![](https://www.hbo.com/content/dam/hbodata/series/game-of-thrones/episodes/8/key-art/got-s8-ka-1920x1080.jpg/_jcr_content/renditions/cq5dam.web.1200.675.jpeg)
+
+# The Smartest Guy in Westeros
+
+## The Citadel Library
+
+There is the largest library in Westeros where Maesters can borrow issues of their favorite scientific magazines to read. Archmaester Ebrose is highly interested in the following questions.
+
+* Who doesn't return magazine issues back?
+* What magazine is the most popular?
+
+He wants us to define a database schema with all the relations satisfying 3NF and answer the questions.
+
+## Winter is Coming
+
+The first thing to begin with is to determine **entities** out of the problem description and their **relations** between each other. Moreover, we need to know **attributes** of each entity to operate upon.
+
+We have the Citadel full of Maesters, who may want to use the library, i.e. to become a *user*. We certainly are to track the readers and to know some basic things about them, e.g. their names. No surprise, the corresponding relation may look like that.
+
+![](/assets/img/got/users.png)
+
+Lets fill the table with some values.
+
+{% highlight sql %}
+insert into users (name) values
+	('Daenerys'),
+	('Sam'),
+	('Cersei'),
+	('Bran'),
+	('Sansa');
+{% endhighlight %}
+
+Sometimes Maesters can walk into the library and take one or more scientific *magazines* to read.
+
+![](/assets/img/got/magazines.png)
+
+Lets add a couple of popular magazines to the library.
+
+{% highlight sql %}
+insert into magazines (name) values
+	('Mastering Dragons'),
+	('Westeros Geographic'),
+	('Wi-Fi Networks');
+{% endhighlight %}
+
+Magazines have concrete *issues*. For example, the library may have 50 copies of the magazine's April issue. Issues may be distinguished by one or more specific attributes, i.g. isbn number.
+
+![](/assets/img/got/issues.png)
+
+Lets fill it with values.
+
+{% highlight sql %}
+insert into issues (magazine_id, isbn) values
+	(1, '978-3-16-148410-0'), (1, '978-3-16-148410-1'), (1, '978-3-16-148410-2'),
+	(2, '978-3-16-148411-0'), (2, '978-3-16-148411-1'), (2, '978-3-16-148411-2'),
+	(3, '978-3-16-148412-0'), (3, '978-3-16-148412-1'), (3, '978-3-16-148412-2');
+{% endhighlight %}
+
+Maesters can borrow issues to read. Sad but true, some readers may not bring borrowed issues back. We want to track borrowed and returned issues in order to understand what we currently have in the library.
+
+![](/assets/img/got/operations.png)
+
+Time goes by, and we have people coming to the library to take something to read.
+
+{% highlight sql %}
+insert into operations (user_id, issue_id, status) values
+	(1, 1, 'booked'),	-- Daenerys booked 978-3-16-148410-0 issue of Mastering Dragons magazine
+	(2, 4, 'booked'),	-- Sam booked 978-3-16-148411-0 issue of Westeros Geographic magazine
+	(4, 7, 'booked'),	-- Bran booked 978-3-16-148412-0 issue of Wi-Fi Networks magazine
+	(2, 4, 'available'),-- Sam returned 978-3-16-148411-0 issue
+	(5, 5, 'booked'),	-- Sansa booked 978-3-16-148411-1 issue of Westeros Geographic magazine
+	(2, 3, 'booked'),	-- Sam booked 978-3-16-148410-2 issue of Mastering Dragons magazine
+	(1, 1, 'available'),-- Daenerys returned 978-3-16-148410-0 issue
+	(2, 3, 'available'),-- Sam returned 978-3-16-148410-2 issue
+	(2, 4, 'booked');	-- Sam booked 978-3-16-148411-0 issue of Westeros Geographic magazine
+{% endhighlight %}
+
+So far, we have the following schema of library database. All the relations satisfy 3NF.
+
+![](/assets/img/got/er-diagram.png)
+
+## When You Play a Game of Thrones You Win or You Die
+
+Now using defined schema lets try to answer Archmaester Ebrose questions.
+
+Who doesn't return magazine issues back?
+
+The first thought coming to mind is to find the latest operation upon the issue made by user and check the type of that operation.
+
+{% highlight sql %}
+select u.id, u.name
+from (
+	select user_id, issue_id, max(id) as id
+	from operations
+	group by user_id, issue_id
+) as latest
+join operations op on op.id = latest.id
+join users u on u.id = op.user_id
+where op.status = 'booked';
+{% endhighlight %}
+
+Using that query we can find that Bran, Sansa and Sam haven't returned borrowed issues yet.
+
+Another approach is based on using two joins instead of subquery.
+
+{% highlight sql %}
+select u.id, u.name
+from users u
+join operations booked on booked.user_id = u.id
+	and booked.status = 'booked'
+left join operations returned on returned.user_id = u.id
+	and returned.status = 'available'
+	and returned.issue_id = booked.issue_id
+	and returned.id > booked.id
+group by u.id
+having count(booked.id) > count(returned.id)
+{% endhighlight %}
+
+The result is the same.
+
+And what magazine is the most popular?
+
+We can find the issues which were booked sometime in the history. Then match the issues with the magazines and sort the result by number of bookings.
+
+{% highlight sql %}
+select m.name, booked_magazines.cnt
+from (
+	select i.magazine_id, sum(booked_issues.cnt) as cnt
+	from (
+		select issue_id, count(id) as cnt
+		from operations
+		where status = 'booked'
+		group by issue_id
+	) as booked_issues
+	join issues i on i.id = booked_issues.issue_id
+	group by i.magazine_id
+) as booked_magazines
+join magazines m on m.id = booked_magazines.magazine_id
+order by (cnt, name) desc;
+{% endhighlight %}
+
+But this looks a little bit ugly and performs not so well. The thoughts may lead us to another pattern with no subqueries but with joins.
+
+{% highlight sql %}
+select m.name, count(op.id) as cnt
+from operations op
+join issues i on op.issue_id = i.id
+join magazines m on i.magazine_id = m.id
+where op.status = 'booked'
+group by m.id
+order by (count(op.id), m.name) desc;
+{% endhighlight %}
+
+## If I Look Back I am Lost
+
+Sam didn't fall into a pattern of servitude at the Citadel, under the tutorial of Archmaester Ebrose, but healed greyscale of Jorah Mormont and discovered dragonglass on Dragonstone island. He did it, because he is the most talented reader in the Citadel library!
+
+Samwell Tarly, the honest Maesters ever, was feeling guilty and told Daenerys and Jorah Mormont that he had "borrowed" some books from the Citadel.
+
+The problem is that now the librarians know it too.
