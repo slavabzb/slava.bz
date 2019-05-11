@@ -22,7 +22,7 @@ permalink: /about/
   }
   img {
     float: left;
-    max-width: 30%;
+    width: 30%;
     height: auto;
   }
 </style>
@@ -44,12 +44,10 @@ permalink: /about/
 
   <p>Have a question? Feel free to contact me.</p>
 
-  <div class="social">
   [![](/assets/img/about/linkedin.png)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
 
   [![](/assets/img/about/fb.png)](https://www.facebook.com/viacheslav.bezborodov)
 
   [![](/assets/img/about/vk.png)](https://vk.com/vyacheslav.bezborodov)
-  </div>
 
 </div>
