@@ -11,9 +11,6 @@ permalink: /about/
     max-width: 600px;
     text-align: left;
   }
-  .social {
-
-  }
   h1 {
     margin: 30px 0;
     font-size: 4em;
@@ -24,6 +21,12 @@ permalink: /about/
     float: left;
     width: 30%;
     height: auto;
+  }
+  img[src*="#social"] {
+    float: left;
+    width: 5%;
+    height: auto;
+    margin-right: 5px;
   }
 </style>
 
@@ -43,11 +46,10 @@ permalink: /about/
   <p>I become more and more interested in working on projects rather than tasks. Leading projects through the workflow is quite a complicated thing. But my belief is that a fullstack wiz can sort that out in a proper way.</p>
 
   <p>Have a question? Feel free to contact me.</p>
-
-  [![](/assets/img/about/linkedin.png)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
-
-  [![](/assets/img/about/fb.png)](https://www.facebook.com/viacheslav.bezborodov)
-
-  [![](/assets/img/about/vk.png)](https://vk.com/vyacheslav.bezborodov)
-
 </div>
+
+[![](/assets/img/about/linkedin.png#social)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
+
+[![](/assets/img/about/fb.png#social)](https://www.facebook.com/viacheslav.bezborodov)
+
+[![](/assets/img/about/vk.png#social)](https://vk.com/vyacheslav.bezborodov)
