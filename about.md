@@ -23,7 +23,7 @@ permalink: /about/
     height: auto;
   }
   img[src*="#social"] {
-    float: left;
+    float: right;
     width: 5%;
     height: auto;
     margin-right: 5px;
