@@ -1,3 +1,9 @@
+---
+layout: post
+title:  "CASE Method: Function and Process Modelling"
+date:   2019-05-11 12:26:00 +0300
+categories: software architecture
+---
 # CASE Method: Function and Process Modelling
 
 ![](/assets/img/case-method/tree.jpg)
