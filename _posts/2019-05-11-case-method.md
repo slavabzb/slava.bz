@@ -4,13 +4,12 @@ title:  "CASE Method: Function and Process Modelling"
 date:   2019-05-11 12:26:00 +0300
 categories: software architecture
 ---
-# CASE Method: Function and Process Modelling
 
 ![](/assets/img/case-method/tree.jpg)
 
 A critical success factor in developing computer-based systems is the effective modelling of business functions and processes.
 
-## Introduction
+# Introduction
 
 Function models are used to represent what a business does or needs to do, to meet it's objectives and respond to events.
 
@@ -29,7 +28,7 @@ The interaction between business functions and the information model is importan
 
 So function models are really useful ways of clearly describing what a business does so that users, analysts and system engineers can agree on the requirement. They are also independent of mechanisms or organization, and thus can be used for many years, even if the organization changes or new mechanisms are found.
 
-## Information Gaining
+# Information Gaining
 
 There are a lot of ways of gaining information about the organization under analysis and a number of sources from which functions can be found. But **interviewing is recommended** as the primary source, with cross-checks from existing documentation, abservation, practical experience and generic hierarchies.
 
@@ -39,7 +38,7 @@ There are a lot of ways of gaining information about the organization under anal
 
 At this point in an analysis you may have hundreds of pages of notes, highlighted documents, mental images, and so on. You will already have done some consolidation to arrange the information into categories such as events, functions and entities. You will also have rewritten what you have been told (or understood) into unambiguous functions, which are independent of the organization structures, roles or mechanisms. Now you must turn these into a function model.
 
-## The Function Hierarchy
+# The Function Hierarchy
 
 To construct a hierarchy from scratch, we start with initial interview notes and known business objectives and build a framework showing the essence of the business top down. The hierarchy is cross-checked and completed bottom up by taking detailed functions and fitting them into an appropriate place in the hierarchy, which will grow, evolve and change shape as the exercise proceeds.
 
@@ -51,20 +50,20 @@ Of the six interrogative words, who, what, when, where, how and why, only the wh
 - **where** is removed when references to parts of the organization are taken out; and
 - **how** is separated out with the removal of the mechanisms.
 
-## The Function Dependency
+# The Function Dependency
 
 The concept of **a function dependency** recognizes that a function may have to wait on the completion of one or more other functions before it can be carried out itself. This dependency information can help us make decisions on such things as:
 - the scope of a system,
 - the order in which systems can be developed,
 - the order in which functions within a system can be represented to the users of that system.
 
-### Function Dependency Diagrams
+## Function Dependency Diagrams
 
 Businesses everywhere spend much of their time reacting to external stimuli. **Function dependency diagrams** are an easy-to-understand way of modelling what happens on receipt of an event, what functions are triggered and what key results are eventually achieved. The diagrams can be used for rigorously defining sequence, interdependency and functions that can be carried out in parallel at a business, system or program/procedure level. Diagrams at the high level are very good for agreeing the scope and sequencing of new systems with management. At the detailed level they must be used on leaf (lowest level) functions to maintain accuracy and are a useful modelling technique for functions that are oriented towards key results following external stimulation.
 
 Function dependency diagramming is another excellent technique to learn to help model the business requirement, communicate with users and build appropriate systems.
 
-## Detailed Function Definition
+# Detailed Function Definition
 
 **An elementary function** is a function that *publishes* the results of its actions in one go, or leaves the state of the information known to the business as it was before it started.
 
@@ -76,7 +75,7 @@ If the systems department is to be an integral part of your business and thus co
 
 In general it is a far better to get the balance right and define requirements in sufficient detail to enable the designers and implementors to make a good job of it. Mistakes **will** occur later, but prototyping and iteration based on a good starting point are cost-effective and timely ways of achieving the desired result.
 
-## Logical System Design
+# Logical System Design
 
 ## Dataflow Diagrams
 
@@ -103,7 +102,7 @@ Designing a system to a level of detail necessary for it to be built successfull
 
 Techniques such as decomposition, dependency and dataflow diagrams provide a good starting point for a physical design, and decomposition, in the form of a structure chart, can be used to record the results of a physical design for a procedural computer programming language.
 
-## A Final Analogy
+# A Final Analogy
 
 As a final reminder about the importance of proper analysis and preparation throughout all the stages of creating information systems, let us consider the analogy of decorating a room in your home.
 
