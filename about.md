@@ -5,23 +5,6 @@ permalink: /about/
 ---
 
 <style type="text/css" media="screen">
-  .container {
-    margin: 10px auto;
-    margin-left: 250px;
-    max-width: 600px;
-    text-align: left;
-  }
-  h1 {
-    margin: 30px 0;
-    font-size: 4em;
-    line-height: 1;
-    letter-spacing: -1px;
-  }
-  img {
-    float: left;
-    width: 30%;
-    height: auto;
-  }
   img[src*="#social"] {
     float: right;
     width: 5%;
@@ -30,23 +13,21 @@ permalink: /about/
   }
 </style>
 
-![](/assets/img/about/ava.jpg)
+![](/assets/img/about/ava.jpeg)
 
-<div class="container">
-  <h1>Hi</h1>
+<h2>Hi</h2>
 
-  <p>My name is Vyacheslav Bezborodov. I’m a lifelong resident of Russia – born and bred here. My current city is Moscow.</p>
+My name is Slava Bezborodov. I’m a web developer. I have a master`s degree in Math & Informatics.
 
-  <p>Writing codes has always been a long-term interest of mine. Good music’s formed a habitual addiction to study English. Good people is what I’m inspired of and try to meet to. From time to time I jog in the parks or do cycling.</p>
+I understand:
+- how to build a web system,
+- why feedback is so important.
 
-  <p>I have a master`s degree in Math & Informatics which I got in 2017. But it doesn’t mean that I stopped. Reading books, watching videos and listening to podcasts – that’s keep me going.</p>
+I can:
+- plan my time,
+- get projects done.
 
-  <p>I am a web developer. Funny school Pascal programs were superseded by severe C++. Then pythonic way of doing things came in the town. Now is a time for my first foray into React and TypeScript. Kinda turn into fullstack.</p>
-
-  <p>I become more and more interested in working on projects rather than tasks. Leading projects through the workflow is quite a complicated thing. But my belief is that a fullstack wiz can sort that out in a proper way.</p>
-
-  <p>Have a question? Feel free to contact me.</p>
-</div>
+Have a question? Feel free to contact me.
 
 [![](/assets/img/about/linkedin.png#social)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
 
