@@ -10,14 +10,14 @@ categories: meet people
     font-size: 20pt;
   }
   h3 {
-    font-size: 12pt;
+    font-size: 10pt;
     font-weight: bold;
   }
   .company {
     font-size: 19pt;
   }
   .job {
-    font-size: 12pt;
+    font-size: 16pt;
     color: gray;
   }
   .epigraph-wrapper {
@@ -28,7 +28,7 @@ categories: meet people
     margin-top: 3em;
     font-style: italic;
     text-align: right;
-    width: 50%;
+    width: 60%;
     float: right;
   }
   .img {
@@ -40,6 +40,19 @@ categories: meet people
   .img-title {
     font-style: italic;
     text-align: center;
+  }
+  .videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+  }
+  .videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
 </style>
 
@@ -85,7 +98,7 @@ Justice depends on norms. Norms depend on customs, traditions and culture. There
 
 I was born and raised in [Samarkand, Uzbekistan](https://en.wikipedia.org/wiki/Samarkand). It is quite an ancient city. As far as I know, the second or third oldest. All the time there is a competition for the title of the oldest there.
 
-<p><a href="https://commons.wikimedia.org/wiki/File:Afrosiab_(8145369219).jpg#/media/Файл:Afrosiab_(8145369219).jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Afrosiab_%288145369219%29.jpg" alt="Afrosiab (8145369219).jpg"></a><br>Author: <a rel="nofollow" class="external text" href="https://www.flickr.com/people/79721788@N00">David Stanley</a> from Nanaimo, Canada - <a rel="nofollow" class="external text" href="https://www.flickr.com/photos/davidstanleytravel/8145369219/">Afrosiab</a>, <a href="https://creativecommons.org/licenses/by/2.0" title="Creative Commons Attribution 2.0">CC BY 2.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=24200001">Link</a></p>
+<p class="img-title"><a href="https://commons.wikimedia.org/wiki/File:Afrosiab_(8145369219).jpg#/media/Файл:Afrosiab_(8145369219).jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/d/dc/Afrosiab_%288145369219%29.jpg" alt="Afrosiab (8145369219).jpg"></a><br>Author: <a rel="nofollow" class="external text" href="https://www.flickr.com/people/79721788@N00">David Stanley</a> from Nanaimo, Canada - <a rel="nofollow" class="external text" href="https://www.flickr.com/photos/davidstanleytravel/8145369219/">Afrosiab</a>, <a href="https://creativecommons.org/licenses/by/2.0" title="Creative Commons Attribution 2.0">CC BY 2.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=24200001">Link</a></p>
 
 There are oases and mountains. The city is surrounded by mountains, and in the middle is a valley. The city is well closed on all sides from the wind.
 
@@ -156,8 +169,8 @@ The problem with social interactions is that everyone should buy your idea. And 
 
 I was preparing for the first conference for a long time. It was Agile Days. It took me 80 hours along with a trip to Agile Days. Because I'm a nerd of it. It includes classes with a coach. Preparing for the next conferences was easier.
 
-<p class="img-title">
-<iframe src="https://www.youtube.com/embed/A3eRZsbaQDg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p class="videoWrapper">
+<iframe width="966" height="543" src="https://www.youtube.com/embed/A3eRZsbaQDg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
 I drew a presentation with designers. I painted on a piece of paper. I went to some conference just with scanned sheets. And it went even better than a presentation from designers. The only thing that is technically difficult to do is transitions.
