@@ -15,7 +15,7 @@ permalink: /about/
 
 ![](/assets/img/about/ava.jpeg)
 
-<h2>Hi, I'm Slava Bezborodov</h2>
+## Hi, I'm Slava Bezborodov
 
 I’m a web developer. I have a master`s degree in Math & Informatics.
 
