@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Meet Peter Markov"
-date:   2019-05-11 12:26:00 +0300
+date:   2019-11-09 11:51:00 +0300
 categories: meet people
 ---
 
@@ -30,6 +30,16 @@ categories: meet people
     text-align: right;
     width: 50%;
     float: right;
+  }
+  .img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  .img-title {
+    font-style: italic;
+    text-align: center;
   }
 </style>
 
@@ -146,7 +156,9 @@ The problem with social interactions is that everyone should buy your idea. And 
 
 I was preparing for the first conference for a long time. It was Agile Days. It took me 80 hours along with a trip to Agile Days. Because I'm a nerd of it. It includes classes with a coach. Preparing for the next conferences was easier.
 
+<p class="img-title">
 <iframe src="https://www.youtube.com/embed/A3eRZsbaQDg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</p>
 
 I drew a presentation with designers. I painted on a piece of paper. I went to some conference just with scanned sheets. And it went even better than a presentation from designers. The only thing that is technically difficult to do is transitions.
 
@@ -156,7 +168,7 @@ In my opinion, presentations are almost evil. I don't really like presentations.
 
 I often walk around Sokolniki Park, get to Oleniye Prudy. I like the park, it is well decorated. At weekends, I can cycle far to Losinyy Ostrov park. I don’t go in for winter sports because of my Samarkand origin. Probably, I should someday try. But I really like summer sports.
 
-<p><a href="https://commons.wikimedia.org/wiki/File:Levitan_Sokolniki_Autumn_1879.jpg#/media/File:Levitan_Sokolniki_Autumn_1879.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Levitan_Sokolniki_Autumn_1879.jpg/1200px-Levitan_Sokolniki_Autumn_1879.jpg" alt="Levitan Sokolniki Autumn 1879.jpg"></a><br>Autumn day. Sokolniki. 1879. By <a href="https://en.wikipedia.org/wiki/en:Isaac_Levitan" class="extiw" title="w:en:Isaac Levitan">Isaac Levitan</a> - <a rel="nofollow" class="external text" href="https://www.tretyakovgallery.ru/en/collection/osenniy-den-sokolniki/">Tretyakov Gallery</a>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=237913">Link</a></p>
+<p class="img-title"><a href="https://commons.wikimedia.org/wiki/File:Levitan_Sokolniki_Autumn_1879.jpg#/media/File:Levitan_Sokolniki_Autumn_1879.jpg"><img class="img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Levitan_Sokolniki_Autumn_1879.jpg/1200px-Levitan_Sokolniki_Autumn_1879.jpg" alt="Levitan Sokolniki Autumn 1879.jpg"></a><br>Autumn day. Sokolniki. 1879. By <a href="https://en.wikipedia.org/wiki/en:Isaac_Levitan" class="extiw" title="w:en:Isaac Levitan">Isaac Levitan</a> - <a rel="nofollow" class="external text" href="https://www.tretyakovgallery.ru/en/collection/osenniy-den-sokolniki/">Tretyakov Gallery</a>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=237913">Link</a></p>
 
 Honestly, I don't know the answer to this question. I'm looking for it, but haven't found yet. The most important what I came to is to listen to the body and not to get worked up.
 
@@ -185,7 +197,7 @@ In my opinion, there are 3 resources in human life - *money*, *time* and *energy
 
 All changes must be based on something. And they are always based on people. In the end, both the object and the subject are people. This is a really important understanding.
 
-<p><a href="https://commons.wikimedia.org/wiki/File:Karl_Marx_001.jpg#/media/File:Karl_Marx_001.jpg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Karl_Marx_001.jpg/1200px-Karl_Marx_001.jpg" alt="Karl Marx 001.jpg"></a><br>Portrait of Karl Marx (1818–1883). By <a href="https://en.wikipedia.org/wiki/en:John_Jabez_Edwin_Mayall" class="extiw" title="w:en:John Jabez Edwin Mayall">John Jabez Edwin Mayal</a> - <a href="https://en.wikipedia.org/wiki/en:International_Institute_of_Social_History" class="extiw" title="w:en:International Institute of Social History">International Institute of Social History</a>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=591288">Link</a></p>
+<p class="img-title"><a href="https://commons.wikimedia.org/wiki/File:Karl_Marx_001.jpg#/media/File:Karl_Marx_001.jpg"><img class="img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Karl_Marx_001.jpg/1200px-Karl_Marx_001.jpg" alt="Karl Marx 001.jpg"></a><br>Portrait of Karl Marx (1818–1883). By <a href="https://en.wikipedia.org/wiki/en:John_Jabez_Edwin_Mayall" class="extiw" title="w:en:John Jabez Edwin Mayall">John Jabez Edwin Mayal</a> - <a href="https://en.wikipedia.org/wiki/en:International_Institute_of_Social_History" class="extiw" title="w:en:International Institute of Social History">International Institute of Social History</a>, Public Domain, <a href="https://commons.wikimedia.org/w/index.php?curid=591288">Link</a></p>
 
 Marx had the postulate that *everything around us is labor*. That is, this phone is essentially the labor of people who assembled it from parts. Some people made this electronics. Someone made glass, someone built a factory with which they made glass, someone mined ore, someone made trucks, etc. If you expand this chain far enough (it is pretty long in our economy today), *at the end of any chain there will be not money, but a person*. A person who invested his time in some kind of action. It means that the start and the end point of any change is a person.
 
