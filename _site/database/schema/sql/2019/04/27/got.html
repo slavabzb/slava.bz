@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Game of Thrones: The Smartest Guy in Westeros | Slava Bezborodov</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Game of Thrones: The Smartest Guy in Westeros" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="My journey in the world." />
+<meta property="og:description" content="My journey in the world." />
+<link rel="canonical" href="http://localhost:4000/database/schema/sql/2019/04/27/got.html" />
+<meta property="og:url" content="http://localhost:4000/database/schema/sql/2019/04/27/got.html" />
+<meta property="og:site_name" content="Slava Bezborodov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-04-27T17:37:23+03:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/database/schema/sql/2019/04/27/got.html","headline":"Game of Thrones: The Smartest Guy in Westeros","dateModified":"2019-04-27T17:37:23+03:00","datePublished":"2019-04-27T17:37:23+03:00","description":"My journey in the world.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/database/schema/sql/2019/04/27/got.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Slava Bezborodov" />
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Slava Bezborodov</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Game of Thrones: The Smartest Guy in Westeros</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2019-04-27T17:37:23+03:00" itemprop="datePublished">
+        Apr 27, 2019
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <p><img src="https://cdn.worldvectorlogo.com/logos/game-of-thrones.svg" alt="" /></p>
+
+<p><img src="https://www.hbo.com/content/dam/hbodata/series/game-of-thrones/episodes/8/key-art/got-s8-ka-1920x1080.jpg/_jcr_content/renditions/cq5dam.web.1200.675.jpeg" alt="" /></p>
+
+<h1 id="the-smartest-guy-in-westeros">The Smartest Guy in Westeros</h1>
+
+<h2 id="the-citadel-library">The Citadel Library</h2>
+
+<p>There is the largest library in Westeros where Maesters can borrow issues of their favorite scientific magazines to read. Archmaester Ebrose is highly interested in the following questions.</p>
+
+<ul>
+  <li>Who doesn’t return magazine issues back?</li>
+  <li>What magazine is the most popular?</li>
+</ul>
+
+<p>He wants us to define a database schema with all the relations satisfying 3NF and answer the questions.</p>
+
+<h2 id="winter-is-coming">Winter is Coming</h2>
+
+<p>The first thing to begin with is to determine <strong>entities</strong> out of the problem description and their <strong>relations</strong> between each other. Moreover, we need to know <strong>attributes</strong> of each entity to operate upon.</p>
+
+<p>We have the Citadel full of Maesters, who may want to use the library, i.e. to become a <em>user</em>. We certainly are to track the readers and to know some basic things about them, e.g. their names. No surprise, the corresponding relation may look like that.</p>
+
+<p><img src="/assets/img/got/users.png" alt="" /></p>
+
+<p>Lets fill the table with some values.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">insert</span> <span class="k">into</span> <span class="n">users</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span>
+  <span class="p">(</span><span class="s1">'Daenerys'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Sam'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Cersei'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Bran'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Sansa'</span><span class="p">);</span></code></pre></figure>
+
+<p>Sometimes Maesters can walk into the library and take one or more scientific <em>magazines</em> to read.</p>
+
+<p><img src="/assets/img/got/magazines.png" alt="" /></p>
+
+<p>Lets add a couple of popular magazines to the library.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">insert</span> <span class="k">into</span> <span class="n">magazines</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="k">values</span>
+  <span class="p">(</span><span class="s1">'Mastering Dragons'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Westeros Geographic'</span><span class="p">),</span>
+  <span class="p">(</span><span class="s1">'Wi-Fi Networks'</span><span class="p">);</span></code></pre></figure>
+
+<p>Magazines have concrete <em>issues</em>. For example, the library may have 50 copies of the magazine’s April issue. Issues may be distinguished by one or more specific attributes, i.g. isbn number.</p>
+
+<p><img src="/assets/img/got/issues.png" alt="" /></p>
+
+<p>Lets fill it with values.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">insert</span> <span class="k">into</span> <span class="n">issues</span> <span class="p">(</span><span class="n">magazine_id</span><span class="p">,</span> <span class="n">isbn</span><span class="p">)</span> <span class="k">values</span>
+  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'978-3-16-148410-0'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'978-3-16-148410-1'</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">'978-3-16-148410-2'</span><span class="p">),</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'978-3-16-148411-0'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'978-3-16-148411-1'</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">'978-3-16-148411-2'</span><span class="p">),</span>
+  <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'978-3-16-148412-0'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'978-3-16-148412-1'</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">'978-3-16-148412-2'</span><span class="p">);</span></code></pre></figure>
+
+<p>Maesters can borrow issues to read. Sad but true, some readers may not bring borrowed issues back. We want to track borrowed and returned issues in order to understand what we currently have in the library.</p>
+
+<p><img src="/assets/img/got/operations.png" alt="" /></p>
+
+<p>Time goes by, and we have people coming to the library to take something to read.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">insert</span> <span class="k">into</span> <span class="n">operations</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span> <span class="k">values</span>
+  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">),</span>	<span class="c1">-- Daenerys booked 978-3-16-148410-0 issue of Mastering Dragons magazine</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">),</span>	<span class="c1">-- Sam booked 978-3-16-148411-0 issue of Westeros Geographic magazine</span>
+  <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">),</span>	<span class="c1">-- Bran booked 978-3-16-148412-0 issue of Wi-Fi Networks magazine</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'available'</span><span class="p">),</span>	<span class="c1">-- Sam returned 978-3-16-148411-0 issue</span>
+  <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">),</span>	<span class="c1">-- Sansa booked 978-3-16-148411-1 issue of Westeros Geographic magazine</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">),</span>	<span class="c1">-- Sam booked 978-3-16-148410-2 issue of Mastering Dragons magazine</span>
+  <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">'available'</span><span class="p">),</span>	<span class="c1">-- Daenerys returned 978-3-16-148410-0 issue</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">'available'</span><span class="p">),</span>	<span class="c1">-- Sam returned 978-3-16-148410-2 issue</span>
+  <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'booked'</span><span class="p">);</span>	<span class="c1">-- Sam booked 978-3-16-148411-0 issue of Westeros Geographic magazine</span></code></pre></figure>
+
+<p>So far, we have the following schema of library database. All the relations satisfy 3NF.</p>
+
+<p><img src="/assets/img/got/er-diagram.png" alt="" /></p>
+
+<h2 id="when-you-play-a-game-of-thrones-you-win-or-you-die">When You Play a Game of Thrones You Win or You Die</h2>
+
+<p>Now using defined schema lets try to answer Archmaester Ebrose questions.</p>
+
+<p>Who doesn’t return magazine issues back?</p>
+
+<p>The first thought coming to mind is to find the latest operation upon the issue made by user and check the type of that operation.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">u</span><span class="p">.</span><span class="n">name</span>
+<span class="k">from</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">issue_id</span><span class="p">,</span> <span class="k">max</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">id</span>
+  <span class="k">from</span> <span class="n">operations</span>
+  <span class="k">group</span> <span class="k">by</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">issue_id</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">latest</span>
+<span class="k">join</span> <span class="n">operations</span> <span class="n">op</span> <span class="k">on</span> <span class="n">op</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">latest</span><span class="p">.</span><span class="n">id</span>
+<span class="k">join</span> <span class="n">users</span> <span class="n">u</span> <span class="k">on</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">op</span><span class="p">.</span><span class="n">user_id</span>
+<span class="k">where</span> <span class="n">op</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">'booked'</span><span class="p">;</span></code></pre></figure>
+
+<p>Using that query we can find that Bran, Sansa and Sam haven’t returned borrowed issues yet.</p>
+
+<p>Another approach is based on using two joins instead of subquery.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">u</span><span class="p">.</span><span class="n">name</span>
+<span class="k">from</span> <span class="n">users</span> <span class="n">u</span>
+<span class="k">join</span> <span class="n">operations</span> <span class="n">booked</span> <span class="k">on</span> <span class="n">booked</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span>
+  <span class="k">and</span> <span class="n">booked</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">'booked'</span>
+<span class="k">left</span> <span class="k">join</span> <span class="n">operations</span> <span class="n">returned</span> <span class="k">on</span> <span class="n">returned</span><span class="p">.</span><span class="n">user_id</span> <span class="o">=</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span>
+  <span class="k">and</span> <span class="n">returned</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">'available'</span>
+  <span class="k">and</span> <span class="n">returned</span><span class="p">.</span><span class="n">issue_id</span> <span class="o">=</span> <span class="n">booked</span><span class="p">.</span><span class="n">issue_id</span>
+  <span class="k">and</span> <span class="n">returned</span><span class="p">.</span><span class="n">id</span> <span class="o">&gt;</span> <span class="n">booked</span><span class="p">.</span><span class="n">id</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">u</span><span class="p">.</span><span class="n">id</span>
+<span class="k">having</span> <span class="k">count</span><span class="p">(</span><span class="n">booked</span><span class="p">.</span><span class="n">id</span><span class="p">)</span> <span class="o">&gt;</span> <span class="k">count</span><span class="p">(</span><span class="n">returned</span><span class="p">.</span><span class="n">id</span><span class="p">)</span></code></pre></figure>
+
+<p>The result is the same.</p>
+
+<p>And what magazine is the most popular?</p>
+
+<p>We can find the issues which were booked sometime in the history. Then match the issues with the magazines and sort the result by number of bookings.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="n">booked_magazines</span><span class="p">.</span><span class="n">cnt</span>
+<span class="k">from</span> <span class="p">(</span>
+  <span class="k">select</span> <span class="n">i</span><span class="p">.</span><span class="n">magazine_id</span><span class="p">,</span> <span class="k">sum</span><span class="p">(</span><span class="n">booked_issues</span><span class="p">.</span><span class="n">cnt</span><span class="p">)</span> <span class="k">as</span> <span class="n">cnt</span>
+  <span class="k">from</span> <span class="p">(</span>
+    <span class="k">select</span> <span class="n">issue_id</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">cnt</span>
+    <span class="k">from</span> <span class="n">operations</span>
+    <span class="k">where</span> <span class="n">status</span> <span class="o">=</span> <span class="s1">'booked'</span>
+    <span class="k">group</span> <span class="k">by</span> <span class="n">issue_id</span>
+  <span class="p">)</span> <span class="k">as</span> <span class="n">booked_issues</span>
+  <span class="k">join</span> <span class="n">issues</span> <span class="n">i</span> <span class="k">on</span> <span class="n">i</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">booked_issues</span><span class="p">.</span><span class="n">issue_id</span>
+  <span class="k">group</span> <span class="k">by</span> <span class="n">i</span><span class="p">.</span><span class="n">magazine_id</span>
+<span class="p">)</span> <span class="k">as</span> <span class="n">booked_magazines</span>
+<span class="k">join</span> <span class="n">magazines</span> <span class="n">m</span> <span class="k">on</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">booked_magazines</span><span class="p">.</span><span class="n">magazine_id</span>
+<span class="k">order</span> <span class="k">by</span> <span class="p">(</span><span class="n">cnt</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">desc</span><span class="p">;</span></code></pre></figure>
+
+<p>But this looks a little bit ugly and performs not so well. The thoughts may lead us to another pattern with no subqueries but with joins.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">select</span> <span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="k">count</span><span class="p">(</span><span class="n">op</span><span class="p">.</span><span class="n">id</span><span class="p">)</span> <span class="k">as</span> <span class="n">cnt</span>
+<span class="k">from</span> <span class="n">operations</span> <span class="n">op</span>
+<span class="k">join</span> <span class="n">issues</span> <span class="n">i</span> <span class="k">on</span> <span class="n">op</span><span class="p">.</span><span class="n">issue_id</span> <span class="o">=</span> <span class="n">i</span><span class="p">.</span><span class="n">id</span>
+<span class="k">join</span> <span class="n">magazines</span> <span class="n">m</span> <span class="k">on</span> <span class="n">i</span><span class="p">.</span><span class="n">magazine_id</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span>
+<span class="k">where</span> <span class="n">op</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="s1">'booked'</span>
+<span class="k">group</span> <span class="k">by</span> <span class="n">m</span><span class="p">.</span><span class="n">id</span>
+<span class="k">order</span> <span class="k">by</span> <span class="p">(</span><span class="k">count</span><span class="p">(</span><span class="n">op</span><span class="p">.</span><span class="n">id</span><span class="p">),</span> <span class="n">m</span><span class="p">.</span><span class="n">name</span><span class="p">)</span> <span class="k">desc</span><span class="p">;</span></code></pre></figure>
+
+<h2 id="if-i-look-back-i-am-lost">If I Look Back I am Lost</h2>
+
+<p>Sam didn’t fall into a pattern of servitude at the Citadel, under the tutorial of Archmaester Ebrose, but healed greyscale of Jorah Mormont and discovered dragonglass on Dragonstone island. He did it, because he is the most talented reader in the Citadel library!</p>
+
+<p>Samwell Tarly, the honest Maesters ever, was feeling guilty and told Daenerys and Jorah Mormont that he had “borrowed” some books from the Citadel.</p>
+
+<p>The problem is that now the librarians know it too.</p>
+
+  </div><a class="u-url" href="/database/schema/sql/2019/04/27/got.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My journey in the world.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.facebook.com/slava.bezborodoff" title="slava.bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#facebook"></use></svg></a></li><li><a rel="me" href="https://github.com/slava-bezborodoff" title="slava-bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.instagram.com/slava.bezborodoff" title="slava.bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/slava-bezborodoff" title="slava-bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://t.me/slava_bezborodoff" title="slava_bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#telegram"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
