@@ -14,13 +14,12 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Slava Bezborodov
-email: vyacheslav.bezborodov@gmail.com
+email: slava.bezborodoff@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  Sharing my adventures in IT world.
+  My journey in the world.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://vyacheslav-bezborodov.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-#twitter_username: jekyllrb
-github_username:  vyacheslav-bezborodov
+url: "https://slava-bezborodoff.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+
 google_analytics: enable
 
 # Build settings
@@ -29,6 +28,37 @@ theme: minima
 plugins:
   - jekyll-feed
   - jekyll-sitemap
+
+minima:
+  social_links:
+    # twitter: jekyllrb
+    github: slava-bezborodoff
+    # stackoverflow: "11111"
+    # dribbble: jekyll
+    facebook: slava.bezborodoff
+    # flickr: jekyll
+    instagram: slava.bezborodoff
+    linkedin: slava-bezborodoff
+    # pinterest: jekyll
+    telegram: slava_bezborodoff
+    # microdotblog: jekyll
+    # keybase: jekyll
+
+    # mastodon:
+    #  - username: jekyll
+    #    instance: example.com
+    #  - username: jekyll2
+    #    instance: example.com
+
+    # gitlab:
+    #  - username: jekyll
+    #    instance: example.com
+    #  - username: jekyll2
+    #    instance: example.com
+
+    # youtube: jekyll
+    # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
+    # youtube_channel_name: CloudCannon
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

@@ -7,8 +7,8 @@ permalink: /about/
 <style type="text/css" media="screen">
   img[src*="#social"] {
     float: right;
-    width: 5%;
-    height: auto;
+    width: auto;
+    height: 40px;
     margin-right: 5px;
   }
 </style>
@@ -25,12 +25,12 @@ I understand:
 
 I can:
 - plan my time,
-- get projects done.
+- get things done.
 
 Have a question? Feel free to contact me.
 
-[![](/assets/img/about/linkedin.png#social)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
+{{ site.minima.social_links.twitter }}
 
-[![](/assets/img/about/fb.png#social)](https://www.facebook.com/viacheslav.bezborodov)
+[![](/assets/img/about/trello-logo-blue.png#social)](https://trello.com/b/BvR1aMKu/slava-bezborodov)
 
-[![](/assets/img/about/vk.png#social)](https://vk.com/vyacheslav.bezborodov)
+[![](/assets/img/about/vk.png#social)](https://vk.com/slava.bezborodoff)
