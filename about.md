@@ -30,9 +30,3 @@ I can:
 Have a question? Feel free to contact me.
 
 [![](/assets/img/about/trello-logo-blue.png#social)](https://trello.com/b/BvR1aMKu/slava-bezborodov)
-
-[![](/assets/img/about/linkedin.png#social)](https://www.linkedin.com/in/vyacheslav-bezborodov/)
-
-[![](/assets/img/about/fb.png#social)](https://www.facebook.com/slava.bezborodoff)
-
-[![](/assets/img/about/vk.png#social)](https://vk.com/slava.bezborodoff)

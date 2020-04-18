@@ -20,7 +20,7 @@ description: >- # this means to ignore newlines until "baseurl:"
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://slava-bezborodoff.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
-google_analytics: enable
+google_analytics: UA-163905546-1
 
 # Build settings
 markdown: kramdown
@@ -36,6 +36,8 @@ minima:
     # stackoverflow: "11111"
     # dribbble: jekyll
     facebook: slava.bezborodoff
+    vk: slava.bezborodoff
+    gmail: slava.bezborodoff@gmail.com
     # flickr: jekyll
     instagram: slava.bezborodoff
     linkedin: slava-bezborodoff
