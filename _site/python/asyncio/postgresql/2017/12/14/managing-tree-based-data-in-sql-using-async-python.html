@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Managing tree-based data in SQL using async Python | Slava Bezborodov</title>
+<meta name="generator" content="Jekyll v3.8.6" />
+<meta property="og:title" content="Managing tree-based data in SQL using async Python" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="This article details how async Python can be used to develop a simple API for managing tree-based data in SQL." />
+<meta property="og:description" content="This article details how async Python can be used to develop a simple API for managing tree-based data in SQL." />
+<link rel="canonical" href="http://localhost:4000/python/asyncio/postgresql/2017/12/14/managing-tree-based-data-in-sql-using-async-python.html" />
+<meta property="og:url" content="http://localhost:4000/python/asyncio/postgresql/2017/12/14/managing-tree-based-data-in-sql-using-async-python.html" />
+<meta property="og:site_name" content="Slava Bezborodov" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-12-14T10:20:45+03:00" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/python/asyncio/postgresql/2017/12/14/managing-tree-based-data-in-sql-using-async-python.html","headline":"Managing tree-based data in SQL using async Python","dateModified":"2017-12-14T10:20:45+03:00","datePublished":"2017-12-14T10:20:45+03:00","description":"This article details how async Python can be used to develop a simple API for managing tree-based data in SQL.","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/python/asyncio/postgresql/2017/12/14/managing-tree-based-data-in-sql-using-async-python.html"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Slava Bezborodov" />
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Slava Bezborodov</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Managing tree-based data in SQL using async Python</h1>
+    <p class="post-meta"><time class="dt-published" datetime="2017-12-14T10:20:45+03:00" itemprop="datePublished">
+        Dec 14, 2017
+      </time></p>
+  </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <h1 id="this-article-details-how-async-python-can-be-used-to-develop-a-simple-api-for-managing-tree-based-data-in-sql">This article details how async Python can be used to develop a simple API for managing tree-based data in SQL.</h1>
+
+<h2 id="intro">Intro</h2>
+
+<p>Tree-based data has often been used to represent the parent-child relationships in the user
+business processes. There are several well-known models for storing such hierarchical data,
+for example <a href="https://en.wikipedia.org/wiki/Adjacency_list">adjacency list</a>,
+<a href="https://en.wikipedia.org/wiki/Nested_set_model">nested set</a>,
+<a href="https://coderwall.com/p/lixing/closure-tables-for-browsing-trees-in-sql">closure table</a>, etc.
+We do not discuss which the best one is, but trying to show how one of those models can be
+implemented using Python.</p>
+
+<h2 id="objectives">Objectives</h2>
+
+<p>Let’s develop a simple system that allows user to leave comments. Now it doesn’t matter what
+exactly the user can comment. The API being developed must satisfy the following most important
+requirements.</p>
+
+<ul>
+  <li>The user has to be authorized in order to make other API calls.</li>
+  <li>There is a method to leave a new comment.</li>
+  <li>There is a method to search comments by content.</li>
+  <li>There is a method to retrieve a sub-tree of comment.</li>
+  <li>All the API calls speak JSON.</li>
+</ul>
+
+<p>Let’s define some technical properties of our system. We would use</p>
+
+<ul>
+  <li>async Python as a backend to handle many concurrent users,</li>
+  <li>PostgreSQL to exploit its full text search,</li>
+  <li>SQLAlchemy to construct SQL queries,</li>
+  <li>Swagger UI as a demonstration GUI for our API.</li>
+</ul>
+
+<h2 id="closure-table">Closure table</h2>
+
+<p>We would use a combination of closure table and adjacency list models. Closure table model
+usually requires two tables to declare.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="n">sa</span>
+ 
+<span class="n">meta</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">MetaData</span><span class="p">()</span>
+ 
+<span class="n">comments</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">Table</span><span class="p">(</span>
+    <span class="s">'comments_comments'</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'content'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">String</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="p">)</span>
+ 
+<span class="n">comments_tree</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">Table</span><span class="p">(</span>
+    <span class="s">'comments_tree'</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="bp">True</span><span class="p">),</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'ancestor_id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'nearest_ancestor_id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'descendant_id'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">),</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">Column</span><span class="p">(</span><span class="s">'depth'</span><span class="p">,</span> <span class="n">sa</span><span class="p">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="p">)</span></code></pre></figure>
+
+<p>So far we have declared the <strong>comments</strong> table to store user comments, and the <strong>comments_tree</strong>
+table to store parent-child comment relationships. Each row in the second one is a relation
+between two comments. The columns have the following meaning:</p>
+
+<ul>
+  <li><em>ancestor_id</em> is an id of the parent comment. It might be not a direct parent, it may be a grand parent or a grand-grand parent for instance. Each comment is an ancestor of itself at the same depth.</li>
+  <li><em>descendant_id</em> is an id of a child comment.</li>
+  <li><em>depth</em> is a level describing how deep in the tree the comment is. All the root comments have zero depth.</li>
+</ul>
+
+<p>However, this closure table contains only a plain info about data relations and doesn’t allow
+to restore the ordered tree structure. To make it possible we will add an additional column.</p>
+
+<ul>
+  <li><em>nearest_ancestor_id</em> is an id of the direct parent of a comment.</li>
+</ul>
+
+<p>Now it’s possible to reproduce an ordered tree structure using info about a relation between a
+comment and its direct parent.</p>
+
+<p>Let’s see how to fill out these tables by example. To create the first comment we’re just putting
+a text into <em>comments</em> table.</p>
+
+<style type="text/css">
+.comments-structure-tbl  {border-collapse:collapse;border-spacing:0;margin:0px auto;}
+.comments-tbl  {border-collapse:collapse;border-spacing:0;border-color:#aaa;margin:0px auto;}
+.comments-tbl td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#333;background-color:#fff;}
+.comments-tbl th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aaa;color:#fff;background-color:#f38630;}
+.comments-tbl .tg-first{vertical-align:top}
+.comments-tree-tbl  {border-collapse:collapse;border-spacing:0;border-color:#999;border:none;margin:0px auto;}
+.comments-tree-tbl td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#444;background-color:#F7FDFA;}
+.comments-tree-tbl th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#999;color:#fff;background-color:#26ADE4;}
+.comments-tree-tbl .tg-second{background-color:#D2E4FC;text-align:right;vertical-align:top}
+.comments-tree-tbl .tg-first{text-align:right;vertical-align:top}
+.comments-tree-tbl .tg-header{vertical-align:top}
+</style>
+
+<table class="comments-tbl">
+<tbody>
+	<tr>
+		<th class="tg-first">id</th>
+		<th class="tg-first">content</th>
+	</tr>
+	<tr>
+	    <td class="tg-first">1</td>
+	    <td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<p>We would also mark that comment as a parent (or ancestor) of itself.</p>
+
+<table class="comments-tree-tbl">
+<tbody>
+	<tr>
+		<th class="tg-header">id</th>
+		<th class="tg-header">ancestor_id</th>
+		<th class="tg-header">nearest_ancestor_id</th>
+		<th class="tg-header">descendant_id</th>
+		<th class="tg-header">depth</th>
+	</tr>
+	<tr>
+	    <td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">0</td>
+	</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<p>To create a child comment we additionally put a relation with its grand parent (a non direct
+ancestor with non-zero depth). The tables are changed as shown below.</p>
+
+<table class="comments-tbl">
+<tbody>
+	<tr>
+		<th class="tg-first">id</th>
+		<th class="tg-first">content</th>
+	</tr>
+	<tr>
+		<td class="tg-first">1</td>
+		<td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+	<tr>
+		<td class="tg-first">2</td>
+		<td class="tg-first">I'm sure no one can.</td>
+	</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<table class="comments-tree-tbl">
+<tbody>
+	<tr>
+		<th class="tg-header">id</th>
+		<th class="tg-header">ancestor_id</th>
+		<th class="tg-header">nearest_ancestor_id</th>
+		<th class="tg-header">descendant_id</th>
+		<th class="tg-header">depth</th>
+	</tr>
+	<tr>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">0</td>
+	</tr>
+	<tr>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">2</td>
+		<td class="tg-first">1</td>
+	</tr>
+	<tr>
+		<td class="tg-second">3</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">1</td>
+		<td class="tg-second">2</td>
+		<td class="tg-second">1</td>
+	</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<p>Now we can see that the number of the relations and the depth are growing together. This is why
+the closure table model has often been criticized. Obviously, in order to add an element with high
+depth value to the tree, we will have to store lots of relations of the element and all its
+ancestors.</p>
+
+<p>But it is not as bad as it seems. In a real case adding an element with a depth of 200 or 1000 may
+not affect the performance of a server in a serious way. In fact, such a situation probably will
+never happen (except when we are commenting the news about our national team losing a soccer
+match). In many cases, the time of data selection is more significant then the insertion time.</p>
+
+<p>Back to our example. The full comment branch is looking like that.</p>
+
+<table class="comments-structure-tbl">
+<tbody>
+	<tr>
+		<td>1</td>
+		<td>&nbsp; Can anybody explain me the difference between Bitcoin and Etherium?</td>
+	</tr>
+	<tr>
+		<td>2</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp; I'm sure no one can.</td>
+	</tr>
+	<tr>
+		<td>6</td>
+		<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Why are you so sure?</td>
+	</tr>
+	<tr>
+	    <td>7</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; This is a blog about cooking!</td>
+	</tr>
+	<tr>
+	    <td>3</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The same request.</td>
+	</tr>
+	<tr>
+	    <td>4</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; No problem, I'll give an explanation paper later.</td>
+	</tr>
+	<tr>
+	    <td>5</td>
+	    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Send me it by email then.</td>
+	</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<p>Let’s see how this branch will be represented in the tables.</p>
+
+<table class="comments-tbl">
+<tbody>
+<tr>
+    <th class="tg-first">id</th>
+    <th class="tg-first">content</th>
+</tr>
+<tr>
+    <td class="tg-first">1</td>
+    <td class="tg-first">Can anybody explain me the difference between Bitcoin and Etherium?</td>
+</tr>
+<tr>
+    <td class="tg-first">2</td>
+    <td class="tg-first">I'm sure no one can.</td>
+</tr>
+<tr>
+    <td class="tg-first">3</td>
+    <td class="tg-first">The same request.</td>
+</tr>
+<tr>
+    <td class="tg-first">4</td>
+    <td class="tg-first">No problem, I'll give an explanation paper later.</td>
+</tr>
+<tr>
+    <td class="tg-first">5</td>
+    <td class="tg-first">Send me it by email then.</td>
+</tr>
+<tr>
+    <td class="tg-first">6</td>
+    <td class="tg-first">Why are you so sure?</td>
+</tr>
+<tr>
+    <td class="tg-first">7</td>
+    <td class="tg-first">This is a blog about cooking!</td>
+</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<table class="comments-tree-tbl">
+<tbody>
+<tr>
+    <th class="tg-header">id</th>
+    <th class="tg-header">ancestor_id</th>
+    <th class="tg-header">nearest_ancestor_id</th>
+    <th class="tg-header">descendant_id</th>
+    <th class="tg-header">depth</th>
+</tr>
+<tr>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">0</td>
+</tr>
+<tr>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">3</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">2</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">4</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">3</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">5</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">3</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">6</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">1</td>
+</tr>
+<tr>
+    <td class="tg-second">7</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">1</td>
+</tr>
+<tr>
+    <td class="tg-first">8</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">9</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">4</td>
+    <td class="tg-second">5</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">10</td>
+    <td class="tg-first">1</td>
+    <td class="tg-first">4</td>
+    <td class="tg-first">5</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">11</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">12</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">6</td>
+    <td class="tg-first">2</td>
+</tr>
+<tr>
+    <td class="tg-second">13</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">2</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">2</td>
+</tr>
+<tr>
+    <td class="tg-first">14</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">3</td>
+</tr>
+<tr>
+    <td class="tg-second">15</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">7</td>
+    <td class="tg-second">3</td>
+</tr>
+<tr>
+    <td class="tg-first">16</td>
+    <td class="tg-first">2</td>
+    <td class="tg-first">6</td>
+    <td class="tg-first">7</td>
+    <td class="tg-first">3</td>
+</tr>
+<tr>
+    <td class="tg-second">17</td>
+    <td class="tg-second">1</td>
+    <td class="tg-second">6</td>
+    <td class="tg-second">7</td>
+    <td class="tg-second">3</td>
+</tr>
+</tbody>
+</table>
+<p><br /></p>
+
+<p>As it shown above, there is a root comment with zero depth within the branch and the max depth
+(or level) of comments is 3. Now let’s see how we can deal with these tables in Python using
+SQLAlchemy.</p>
+
+<h2 id="sql-queries">SQL queries</h2>
+
+<h3 id="inserting-a-node-to-the-tree">Inserting a node to the tree</h3>
+
+<p>Filling <em>comments_tree</em> table can be done by using SQL
+<a href="https://www.w3schools.com/sql/sql_insert_into_select.asp">INSERT INTO SELECT</a> statement.
+Using SQLAlchemy it can be written like shown below.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="n">sa</span>
+ 
+<span class="n">ancestor</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">alias</span><span class="p">(</span><span class="s">'ancestor'</span><span class="p">)</span>
+<span class="n">descendant</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">alias</span><span class="p">(</span><span class="s">'descendant'</span><span class="p">)</span>
+<span class="n">nearest</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">alias</span><span class="p">(</span><span class="s">'nearest'</span><span class="p">)</span>
+ 
+<span class="n">sel</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">select</span><span class="p">([</span>
+    <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">nearest_ancestor_id</span><span class="p">,</span>
+    <span class="n">ancestor</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="p">]).</span><span class="n">where</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">and_</span><span class="p">(</span>
+    <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">==</span> <span class="n">parent_id</span><span class="p">,</span>
+    <span class="n">ancestor</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">==</span> <span class="n">comment_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">==</span> <span class="n">parent_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">==</span> <span class="n">parent_id</span><span class="p">,</span>
+<span class="p">))</span>
+
+<span class="n">ins</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">insert</span><span class="p">().</span><span class="n">from_select</span><span class="p">([</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span><span class="p">,</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">nearest_ancestor_id</span><span class="p">,</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">depth</span><span class="p">,</span>
+<span class="p">],</span> <span class="n">sel</span><span class="p">)</span></code></pre></figure>
+
+<p>That code produces the following SQL query.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">comments_tree</span>
+    <span class="p">(</span><span class="n">ancestor_id</span><span class="p">,</span> <span class="n">nearest_ancestor_id</span><span class="p">,</span> <span class="n">descendant_id</span><span class="p">,</span> <span class="n">depth</span><span class="p">)</span>
+<span class="k">SELECT</span>
+    <span class="n">descendant</span><span class="p">.</span><span class="n">ancestor_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">nearest_ancestor_id</span><span class="p">,</span>
+    <span class="n">ancestor</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+    <span class="n">nearest</span><span class="p">.</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">FROM</span>
+    <span class="n">comments_tree</span> <span class="k">AS</span> <span class="n">descendant</span><span class="p">,</span>
+    <span class="n">comments_tree</span> <span class="k">AS</span> <span class="n">nearest</span><span class="p">,</span>
+    <span class="n">comments_tree</span> <span class="k">AS</span> <span class="n">ancestor</span>
+<span class="k">WHERE</span> <span class="n">descendant</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">=</span> <span class="n">PARENT_ID</span>
+    <span class="k">AND</span> <span class="n">ancestor</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">COMMENT_ID</span>
+    <span class="k">AND</span> <span class="n">nearest</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">PARENT_ID</span>
+    <span class="k">AND</span> <span class="n">nearest</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">=</span> <span class="n">PARENT_ID</span></code></pre></figure>
+
+<h3 id="selecting-a-sub-tree">Selecting a sub-tree</h3>
+
+<p>Selecting the whole comment branch can be done like that.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="n">sa</span>
+ 
+<span class="n">join</span> <span class="o">=</span> <span class="n">comments</span><span class="p">.</span><span class="n">join</span><span class="p">(</span>
+    <span class="n">comments_tree</span><span class="p">,</span> <span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span> <span class="o">==</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span>
+<span class="p">)</span>
+
+<span class="n">sel</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">select</span><span class="p">([</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">nearest_ancestor_id</span><span class="p">,</span>
+    <span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">,</span>
+    <span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">content</span><span class="p">,</span>
+<span class="p">]).</span><span class="n">select_from</span><span class="p">(</span><span class="n">join</span><span class="p">).</span><span class="n">where</span><span class="p">(</span><span class="n">comments_tree</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">==</span> <span class="n">comment_id</span><span class="p">)</span></code></pre></figure>
+
+<p>The corresponding SQL query.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
+    <span class="n">comments_tree</span><span class="p">.</span><span class="n">nearest_ancestor_id</span><span class="p">,</span>
+    <span class="n">comments_comments</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">comments_comments</span><span class="p">.</span><span class="n">content</span>
+<span class="k">FROM</span>
+    <span class="n">comments_comments</span>
+<span class="k">JOIN</span> <span class="n">comments_tree</span> <span class="k">ON</span> <span class="n">comments_comments</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">descendant_id</span>
+<span class="k">WHERE</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">COMMENT_ID</span></code></pre></figure>
+
+<h3 id="deleting-a-sub-tree">Deleting a sub-tree</h3>
+
+<p>To delete a comment and all its sub-comments we have to:</p>
+
+<ul>
+  <li>figure out and remove all the relations in which the target comment is involved (meaning it’s an ancestor or a nearest ancestor or a descendant),</li>
+  <li>remove all the comments for which the target comment is an ancestor.</li>
+</ul>
+
+<p>Using SQLAlchemy we can write it like that.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="n">sa</span>
+ 
+<span class="n">remove</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">alias</span><span class="p">(</span><span class="s">'remove'</span><span class="p">)</span>
+<span class="n">descendant</span> <span class="o">=</span> <span class="n">comments_tree</span><span class="p">.</span><span class="n">alias</span><span class="p">(</span><span class="s">'descendant'</span><span class="p">)</span>
+ 
+<span class="n">sel</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">select</span><span class="p">([</span><span class="n">remove</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span> <span class="n">remove</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="nb">id</span><span class="p">]).</span><span class="n">where</span><span class="p">(</span><span class="n">sa</span><span class="p">.</span><span class="n">and_</span><span class="p">(</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">or_</span><span class="p">(</span>
+        <span class="n">remove</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">==</span> <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+        <span class="n">remove</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">nearest_ancestor_id</span> <span class="o">==</span> <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+        <span class="n">remove</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">==</span> <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+    <span class="p">),</span>
+    <span class="n">descendant</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">==</span> <span class="n">comment_id</span><span class="p">,</span>
+<span class="p">))</span></code></pre></figure>
+
+<p>SQL query.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
+    <span class="n">remove</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">,</span>
+    <span class="n">remove</span><span class="p">.</span><span class="n">id</span>
+<span class="k">FROM</span>
+    <span class="n">comments_tree</span> <span class="k">AS</span> <span class="n">remove</span><span class="p">,</span>
+    <span class="n">comments_tree</span> <span class="k">AS</span> <span class="n">descendant</span>
+<span class="k">WHERE</span> <span class="p">(</span><span class="n">remove</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">.</span><span class="n">descendant_id</span>
+    <span class="k">OR</span> <span class="n">remove</span><span class="p">.</span><span class="n">nearest_ancestor_id</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">.</span><span class="n">descendant_id</span>
+    <span class="k">OR</span> <span class="n">remove</span><span class="p">.</span><span class="n">descendant_id</span> <span class="o">=</span> <span class="n">descendant</span><span class="p">.</span><span class="n">descendant_id</span><span class="p">)</span>
+    <span class="k">AND</span> <span class="n">descendant</span><span class="p">.</span><span class="n">ancestor_id</span> <span class="o">=</span> <span class="n">COMMENT_ID</span></code></pre></figure>
+
+<p>That query will select all the ids of  the comments (the first column) and all the ids of the
+comment relations (the second column) we need to delete.</p>
+
+<h2 id="the-details">The details</h2>
+
+<h3 id="schema-changes">Schema changes</h3>
+
+<p>It’s most likely that we’ll want to show more info about comments, not only a text. For instance,
+we may want to display a name of the author of the comment and the time when comment has been left.
+It will cause the schema changes to be applied. We would probably want to use one of the database
+schema management systems like
+<a href="http://sqlalchemy-migrate.readthedocs.io/en/latest/index.html">SQLAlchemy Migrate</a>
+to simplify that.</p>
+
+<h3 id="executing-sql">Executing SQL</h3>
+
+<p>Due to async Python we would use <a href="https://aiopg.readthedocs.io/en/stable/index.html">aiopg</a> to
+operate upon PostgreSQL. We can init and shutdown a connection pool as shown below.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">aiopg.sa</span>
+<span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+ 
+<span class="k">async</span> <span class="k">def</span> <span class="nf">setup_pg</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="k">await</span> <span class="n">aiopg</span><span class="p">.</span><span class="n">sa</span><span class="p">.</span><span class="n">create_engine</span><span class="p">(</span><span class="n">DATABASE</span><span class="p">)</span>
+    <span class="n">app</span><span class="p">[</span><span class="s">'db'</span><span class="p">]</span> <span class="o">=</span> <span class="n">engine</span>
+
+<span class="k">async</span> <span class="k">def</span> <span class="nf">close_pg</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="n">app</span><span class="p">[</span><span class="s">'db'</span><span class="p">].</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">await</span> <span class="n">app</span><span class="p">[</span><span class="s">'db'</span><span class="p">].</span><span class="n">wait_closed</span><span class="p">()</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">Application</span><span class="p">()</span>
+
+<span class="n">app</span><span class="p">.</span><span class="n">on_startup</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">setup_pg</span><span class="p">)</span>
+<span class="n">app</span><span class="p">.</span><span class="n">on_cleanup</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">close_pg</span><span class="p">)</span></code></pre></figure>
+
+<h3 id="full-text-search">Full-text search</h3>
+
+<p>PostgreSQL supports full-text search, we can exploit it using SQLAlchemy.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">sqlalchemy</span> <span class="k">as</span> <span class="n">sa</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.sql.expression</span> <span class="kn">import</span> <span class="n">func</span>
+ 
+<span class="n">sel</span> <span class="o">=</span> <span class="n">sa</span><span class="p">.</span><span class="n">select</span><span class="p">([</span><span class="n">comments</span><span class="p">]).</span><span class="n">where</span><span class="p">(</span><span class="n">comments</span><span class="p">.</span><span class="n">c</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">match</span><span class="p">(</span>
+    <span class="n">sa</span><span class="p">.</span><span class="n">cast</span><span class="p">(</span><span class="n">func</span><span class="p">.</span><span class="n">plainto_tsquery</span><span class="p">(</span><span class="s">'query text'</span><span class="p">),</span> <span class="n">sa</span><span class="p">.</span><span class="n">TEXT</span><span class="p">)</span>
+<span class="p">))</span></code></pre></figure>
+
+<p>That will produce the following SQL query.</p>
+
+<figure class="highlight"><pre><code class="language-sql" data-lang="sql"><span class="k">SELECT</span>
+    <span class="n">comments_comments</span><span class="p">.</span><span class="n">id</span><span class="p">,</span>
+    <span class="n">comments_comments</span><span class="p">.</span><span class="n">content</span>
+<span class="k">FROM</span>
+    <span class="n">comments_comments</span>
+<span class="k">WHERE</span>
+    <span class="n">comments_comments</span><span class="p">.</span><span class="n">content</span> <span class="o">@@</span> <span class="n">to_tsquery</span><span class="p">(</span>
+        <span class="k">CAST</span><span class="p">(</span><span class="n">plainto_tsquery</span><span class="p">(</span><span class="s1">'query text'</span><span class="p">)</span> <span class="k">AS</span> <span class="nb">TEXT</span><span class="p">)</span>
+    <span class="p">)</span></code></pre></figure>
+
+<p>This is a basic full-text search usage. For more complex examples see the links below.</p>
+
+<h3 id="user-auth">User auth</h3>
+
+<p>To avoid unauthorized access to the API we would require an auth token being passed as a
+parameter to each call. We can use <a href="https://en.wikipedia.org/wiki/JSON_Web_Token">JSON Web Tokens</a>
+to implement that. To figure out how to use JWT in Python, follow the links below.</p>
+
+<h3 id="swagger-ui">Swagger UI</h3>
+
+<p>To provide a demonstration GUI for the API we can use
+<a href="http://aiohttp-swagger.readthedocs.io/en/latest/">aiohttp-swagger</a>.</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">aiohttp</span> <span class="kn">import</span> <span class="n">web</span>
+<span class="kn">from</span> <span class="nn">aiohttp_swagger</span> <span class="kn">import</span> <span class="n">setup_swagger</span>
+ 
+<span class="n">app</span> <span class="o">=</span> <span class="n">web</span><span class="p">.</span><span class="n">Application</span><span class="p">()</span>
+
+<span class="n">setup_swagger</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">swagger_from_file</span><span class="o">=</span><span class="s">'swagger.yaml'</span><span class="p">)</span></code></pre></figure>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>In this article we’ve developed a simple API that allows user to leave comments. We’ve learned
+how to use a combination of closure table and adjacency list models to work with tree-based data.
+The source code of the project is available in
+<a href="https://github.com/vyacheslav-bezborodov/closure-table">the repository</a> on GitHub.</p>
+
+<h1 id="links">Links</h1>
+
+<ul>
+  <li><a href="http://technobytz.com/closure_table_store_hierarchical_data.html">http://technobytz.com/closure_table_store_hierarchical_data.html</a></li>
+  <li><a href="https://www.postgresql.org/docs/9.5/static/textsearch.html">https://www.postgresql.org/docs/9.5/static/textsearch.html</a></li>
+  <li><a href="https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/">https://steelkiwi.com/blog/jwt-authorization-python-part-1-practise/</a></li>
+</ul>
+
+
+  </div><a class="u-url" href="/python/asyncio/postgresql/2017/12/14/managing-tree-based-data-in-sql-using-async-python.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>My journey in the world.</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://www.facebook.com/slava.bezborodoff" title="slava.bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#facebook"></use></svg></a></li><li><a rel="me" href="https://github.com/slava-bezborodoff" title="slava-bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.instagram.com/slava.bezborodoff" title="slava.bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#instagram"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/slava-bezborodoff" title="slava-bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://t.me/slava_bezborodoff" title="slava_bezborodoff"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#telegram"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
