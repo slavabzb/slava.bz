@@ -31,4 +31,6 @@ Have a question? Feel free to contact me.
 
 Check out [my wiki](https://slava-bezborodoff.gitbook.io/wiki/) where I share everything I know.
 
+<a href="https://www.patreon.com/bePatron?u=33921807" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+
 [![](/assets/img/about/trello-logo-blue.png#social)](https://trello.com/b/BvR1aMKu/slava-bezborodov)
