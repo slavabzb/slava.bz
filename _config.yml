@@ -60,8 +60,8 @@ minima:
     #    instance: example.com
 
     # youtube: jekyll
-    # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
-    # youtube_channel_name: CloudCannon
+    youtube_channel: UCEmB1pIxkdIXeiu6ys9DJUw
+    youtube_channel_name: Slava Bezborodov
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
