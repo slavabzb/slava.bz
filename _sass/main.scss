@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+.donate-services {
+  // width: 95%;
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-wrap: wrap;
+  // margin: 120px auto;
+  // font-size: 18px;
+  // box-sizing: border-box;
+
+  > .title {
+    font-size: x-large;
+    margin-bottom: 20px;
+  }
+
+  > .description {
+    margin-bottom: 20px;
+    font-size: large;
+  }
+
+  > .service {
+    margin-bottom: 20px;
+
+    > .description {
+      float: left;
+      max-width: 60%;
+      // box-sizing: border-box;
+      // padding-right: 20px;
+    }
+
+    > .button {
+      float: right;
+      width: 140px;
+      text-align: center;
+      display: inline-block;
+      padding: 10px 25px;
+      border-radius: 5px;
+      background-color: #333;
+      color: #FFF;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+  }
+}

@@ -16,11 +16,36 @@
 title: Slava Bezborodov
 email: slava.bezborodoff@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  My journey in the world.
+  My journey to exploring the world
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://slava-bezborodoff.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 google_analytics: UA-163905546-1
+
+donate_services:
+  - yandex_money:
+    type: yandex
+    title: Yandex.Money
+    description: Money from bank cards or from Yandex.Money Wallets including 0.5% commission
+    config:
+      wallet: 4100112640469842
+      services:
+        - amount: 100
+          description: Cheap and simple
+        - amount: 250
+          description: Top up my phone balance
+        - amount: 500
+          description: One pizza for me
+        - amount: 999
+          description: Three nines
+        - description: In fact, any donation makes me happier!
+  - patreon:
+    type: patreon
+    title: Patreon
+    description: >-
+      I retain creative freedom while getting the salary I deserve,
+      and you get to rest easy knowing that your money goes directly
+      towards creating more of what you love
 
 # Build settings
 markdown: kramdown
@@ -29,6 +54,12 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+header_pages:
+- donate.md
+- about.md
 
 minima:
   social_links:
