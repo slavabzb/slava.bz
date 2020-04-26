@@ -2,6 +2,8 @@
 
 @import "minima";
 
+$on-apps:          400px !default;
+
 .donate-services {
   max-width: 70%;
   display: flex;
@@ -9,7 +11,7 @@
   justify-content: center;
   flex-wrap: wrap;
 
-  @include media-query(400px) {
+  @include media-query($on-apps) {
     max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
     max-width:         calc(#{$content-width} - (#{$spacing-unit}));
   }
@@ -30,6 +32,10 @@
     > .description {
       float: left;
       max-width: 50%;
+
+      @include media-query($on-apps) {
+        max-width: 40%;
+      }
     }
 
     > .button {
