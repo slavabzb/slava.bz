@@ -39,3 +39,10 @@
     }
   }
 }
+
+img[src*="#social"] {
+  float: right;
+  width: auto;
+  height: 40px;
+  margin-right: 5px;
+}

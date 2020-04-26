@@ -4,15 +4,6 @@ title: About
 permalink: /about/
 ---
 
-<style type="text/css" media="screen">
-  img[src*="#social"] {
-    float: right;
-    width: auto;
-    height: 40px;
-    margin-right: 5px;
-  }
-</style>
-
 ![](/assets/img/about/ava.jpeg)
 
 ## Hi, I'm Slava Bezborodov
