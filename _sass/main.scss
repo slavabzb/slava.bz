@@ -9,11 +9,9 @@
   justify-content: center;
   flex-wrap: wrap;
 
-  @include media-query($on-palm) {
+  @include media-query(400px) {
     max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));
     max-width:         calc(#{$content-width} - (#{$spacing-unit}));
-    padding-right: $spacing-unit / 2;
-    padding-left: $spacing-unit / 2;
   }
 
   > .title {
