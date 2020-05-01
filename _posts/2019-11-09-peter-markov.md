@@ -6,13 +6,6 @@ categories: meet people
 ---
 
 <style type="text/css">
-  h2 {
-    font-size: 20pt;
-  }
-  h3 {
-    font-size: 10pt;
-    font-weight: bold;
-  }
   .company {
     font-size: 19pt;
   }
@@ -28,7 +21,7 @@ categories: meet people
     margin-top: 3em;
     font-style: italic;
     text-align: right;
-    width: 60%;
+    width: 50%;
     float: right;
   }
   .img {
@@ -40,19 +33,6 @@ categories: meet people
   .img-title {
     font-style: italic;
     text-align: center;
-  }
-  .videoWrapper {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
-    padding-top: 25px;
-    height: 0;
-  }
-  .videoWrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
   }
 </style>
 
@@ -169,7 +149,7 @@ The problem with social interactions is that everyone should buy your idea. And 
 
 I was preparing for the first conference for a long time. It was Agile Days. It took me 80 hours along with a trip to Agile Days. Because I'm a nerd of it. It includes classes with a coach. Preparing for the next conferences was easier.
 
-<p class="videoWrapper">
+<p class="video">
 <iframe width="966" height="543" src="https://www.youtube.com/embed/A3eRZsbaQDg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </p>
 
