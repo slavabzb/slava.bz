@@ -21,5 +21,3 @@ I can:
 Have a question? Feel free to contact me.
 
 Check out [my wiki](https://wiki.slavabezborodov.com) where I share everything I know.
-
-[![](/assets/img/about/trello-logo-blue.png#social)](https://trello.com/b/BvR1aMKu/slava-bezborodov)

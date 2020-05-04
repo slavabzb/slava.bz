@@ -72,7 +72,7 @@ minima:
     gmail: slava.bezborodoff@gmail.com
     # flickr: jekyll
     instagram: slavabezborodov56
-    linkedin: slava-bezborodoff
+    linkedin: slavabezborodov56
     # pinterest: jekyll
     telegram: slavabezborodov56
     # microdotblog: jekyll
@@ -91,8 +91,8 @@ minima:
     #    instance: example.com
 
     # youtube: jekyll
-    youtube_channel: UCEmB1pIxkdIXeiu6ys9DJUw
-    youtube_channel_name: Slava Bezborodov
+    # youtube_channel: UCEmB1pIxkdIXeiu6ys9DJUw
+    # youtube_channel_name: Slava Bezborodov
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
