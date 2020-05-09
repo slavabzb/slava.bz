@@ -15,6 +15,10 @@
 
     <!-- Load cv.css for custom styles -->
     <link rel="stylesheet" href="/assets/css/cv.css">
+
+    {%- if jekyll.environment == 'production' and site.google_analytics -%}
+      {%- include google-analytics.html -%}
+    {%- endif -%}
   </head>
   <body class="A4">
     {{ content }}
