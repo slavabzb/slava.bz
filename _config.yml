@@ -61,15 +61,18 @@ header_pages:
 - donate.md
 - about.md
 
+cv:
+  city: Moscow
+  job: Software Engineer
+
 minima:
   social_links:
     # twitter: jekyllrb
     github: slavabezborodov56
-    # stackoverflow: "11111"
+    stackoverflow: "8664596"
     # dribbble: jekyll
     facebook: slavabezborodov56
     vk: slavabezborodov56
-    gmail: slavabezborodov56@gmail.com
     # flickr: jekyll
     instagram: slavabezborodov56
     linkedin: slavabezborodov56

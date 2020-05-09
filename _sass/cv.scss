@@ -31,16 +31,21 @@ body {
     font-size: x-small;
 
     li {
-      margin-right: 13px;
+      list-style-type: none;
+      position: relative;
     }
 
-    > :first-child {
-      list-style: none;
-      margin-left: 0px;
-    }
+    > :not(:first-child) {
+      margin-left: 1em;
 
-    > :last-child {
-      margin-right: 0px;
+      &:before {
+        content: "\2219";
+        font-size: 2.5em;
+        line-height: 0;
+        position: absolute;
+        top: .23em;
+        left: -0.35em;
+      }
     }
   }
 
@@ -57,6 +62,72 @@ body {
       margin: 0 auto;
       height: 100%;
       width: auto;
+    }
+  }
+
+}
+
+.contact-list {
+  text-align: center;
+  font-size: x-small;
+  margin: 0 auto;
+  padding: 0;
+
+  li {
+    list-style-type: none;
+    display: inline;
+  }
+
+  .svg-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    padding: 5px 3px 2px 5px;
+    vertical-align: middle;
+  }
+
+  .grey {
+    color: #828282;
+  }
+}
+
+.experience {
+  h1 {
+    border-bottom: solid 1px;
+  }
+
+  .company {
+    .info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+
+  .name {
+    font-size: xx-large;
+  }
+
+  .location {
+  }
+
+  .positions {
+    margin-left: 1em;
+
+    .position {
+      .info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .title {
+        font-variant: small-caps;
+      }
+
+      .time {
+        font-style: italic;
+      }
     }
   }
 }

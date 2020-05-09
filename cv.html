@@ -1,0 +1,82 @@
+---
+layout: cv
+title: Slava Bezborodov
+---
+
+{%- assign cv = site.cv -%}
+{%- assign social = site.minima.social_links -%}
+
+<section class="sheet padding-25mm">
+  <article>
+    <div class="headline">
+      <h1>Slava <strong>Bezborodov</strong></h1>
+
+      <ul>
+        <li>{{ cv.job }}</li>
+        <li>{{ cv.city }}</li>
+      </ul>
+
+      <div class="ava">
+        <img src="/assets/img/cv/ava.jpg" />
+      </div>
+
+    </div>
+
+    <ul class="contact-list">
+      {%- if site.url -%}<li><a rel="me" href="{{ site.url | cgi_escape | escape }}" title="{{ site.url | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#homepage' | relative_url }}"></use></svg>{{ site.url | escape }}</a></li>{%- endif -%}
+      {%- if site.email -%}<li><a rel="me" href="mailto:{{ site.email | cgi_escape | escape }}" title="{{ site.email | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#gmail' | relative_url }}"></use></svg>{{ site.email | escape }}</a></li>{%- endif -%}
+      {%- if social.linkedin -%}<li><a rel="me" href="https://www.linkedin.com/in/{{ social.linkedin | cgi_escape | escape }}" title="{{ social.linkedin | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#linkedin' | relative_url }}"></use></svg>{{ social.linkedin | escape }}</a></li>{%- endif -%}
+      {%- if social.github -%}<li><a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>{{ social.github | escape }}</a></li>{%- endif -%}
+      {%- if social.facebook -%}<li><a rel="me" href="https://www.facebook.com/{{ social.facebook | cgi_escape | escape }}" title="{{ social.facebook | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#facebook' | relative_url }}"></use></svg>{{ social.facebook | escape }}</a></li>{%- endif -%}
+      {%- if social.vk -%}<li><a rel="me" href="https://vk.com/{{ social.vk | cgi_escape | escape }}" title="{{ social.vk | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#vk' | relative_url }}"></use></svg>{{ social.vk | escape }}</a></li>{%- endif -%}
+      {%- if social.telegram -%}<li><a rel="me" href="https://t.me/{{ social.telegram | cgi_escape | escape }}" title="{{ social.telegram | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#telegram' | relative_url }}"></use></svg>{{ social.telegram | escape }}</a></li>{%- endif -%}
+    </ul>
+
+    <div class="experience">
+      <h1>Experience</h1>
+
+      <div class="companies">
+
+        <div class="company">
+          <div class="info">
+            <div class="name">Cian</div>
+            <div class="location">Moscow</div>
+          </div>
+          <div class="positions">
+            <div class="position">
+              <div class="info">
+                <div class="title">Team Lead (10-person team, Project Management)</div>
+                <div class="time">Jan 2020 – Present</div>
+              </div>
+              <div class="description">
+                Description
+              </div>
+            </div>
+
+            <div class="position">
+              <div class="info">
+                <div class="title">Senior Software Engineer (Python, Typescript)</div>
+                <div class="time">Sep 2019 – Dec 2019</div>
+              </div>
+              <div class="description">
+                Description
+              </div>
+            </div>
+
+            <div class="position">
+              <div class="info">
+                <div class="title">Software Developer (Python)</div>
+                <div class="time">Jul 2018 – Aug 2019</div>
+              </div>
+              <div class="description">
+                Description
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </article>
+</section>
