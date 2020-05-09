@@ -14,7 +14,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Slava Bezborodov
-email: slava.bezborodoff@gmail.com
+email: slavabezborodov56@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   My journey to exploring the world
 baseurl: "" # the subpath of your site, e.g. /blog
@@ -64,12 +64,12 @@ header_pages:
 minima:
   social_links:
     # twitter: jekyllrb
-    github: slava-bezborodoff
+    github: slavabezborodov56
     # stackoverflow: "11111"
     # dribbble: jekyll
     facebook: slavabezborodov56
     vk: slavabezborodov56
-    gmail: slava.bezborodoff@gmail.com
+    gmail: slavabezborodov56@gmail.com
     # flickr: jekyll
     instagram: slavabezborodov56
     linkedin: slavabezborodov56
