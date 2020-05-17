@@ -63,7 +63,6 @@ body {
       width: auto;
     }
   }
-
 }
 
 .contact-list {
@@ -112,10 +111,10 @@ body {
   }
 
   .location {
+    font-style: italic;
   }
 
   .positions {
-    margin-left: 1em;
 
     .position {
       margin-top: .5em;
@@ -124,14 +123,83 @@ body {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+
+        .title {
+          font-variant: small-caps;
+        }
+
+        .time {
+          font-style: italic;
+
+          ul {
+            display: inline-flex;
+            margin: 0;
+
+            li {
+              list-style-type: none;
+              position: relative;
+            }
+
+            > :not(:first-child) {
+              margin-left: 1em;
+
+              &:before {
+                content: "\2219";
+                font-size: 2.5em;
+                line-height: 0;
+                position: absolute;
+                top: .23em;
+                left: -0.35em;
+              }
+            }
+          }
+        }
       }
 
-      .title {
-        font-variant: small-caps;
+      .description {
+        ul {
+          margin: 0.5em 0 0 0;
+          padding: 0;
+          list-style: inside;
+        }
+      }
+    }
+  }
+
+  .skills {
+    display: table;
+
+    .group {
+      display: table-row;
+
+      ul {
+        display: inline-flex;
+        margin: 0;
+        padding: 0 1em;
+
+        li {
+          list-style-type: none;
+          position: relative;
+        }
+
+        > :not(:first-child) {
+          margin-left: 1em;
+
+          &:before {
+            content: "\2219";
+            font-size: 2.5em;
+            line-height: 0;
+            position: absolute;
+            top: .23em;
+            left: -0.35em;
+          }
+        }
       }
 
-      .time {
-        font-style: italic;
+      .level {
+        display: table-cell;
+        text-align: right;
+        font-weight: bold;
       }
     }
   }
