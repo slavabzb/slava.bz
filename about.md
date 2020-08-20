@@ -20,4 +20,4 @@ I can:
 
 Have a question? Feel free to contact me.
 
-Check out [my wiki](https://slavabezborodov56.gitbook.io/wiki/) where I share everything I know.
+Check out [my wiki](https://wiki.slavabezborodov.com) where I share everything I know.
