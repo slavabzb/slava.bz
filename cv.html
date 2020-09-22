@@ -23,7 +23,7 @@ title: CV
     </div>
 
     <ul class="contact-list">
-      {%- if site.url -%}<li><a rel="me" href="{{ site.url | cgi_escape | escape }}" title="{{ site.url | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#homepage' | relative_url }}"></use></svg>{{ site.url | escape }}</a></li>{%- endif -%}
+      {%- if site.url -%}<li><a rel="me" href="{{ site.url | escape }}" title="{{ site.url | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#homepage' | relative_url }}"></use></svg>{{ site.url | escape }}</a></li>{%- endif -%}
       {%- if site.email -%}<li><a rel="me" href="mailto:{{ site.email | cgi_escape | escape }}" title="{{ site.email | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#gmail' | relative_url }}"></use></svg>{{ site.email | escape }}</a></li>{%- endif -%}
       {%- if social.linkedin -%}<li><a rel="me" href="https://www.linkedin.com/in/{{ social.linkedin | cgi_escape | escape }}" title="{{ social.linkedin | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#linkedin' | relative_url }}"></use></svg>{{ social.linkedin | escape }}</a></li>{%- endif -%}
       {%- if social.github -%}<li><a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>{{ social.github | escape }}</a></li>{%- endif -%}

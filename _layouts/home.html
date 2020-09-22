@@ -9,13 +9,30 @@ layout: default
 
   {{ content }}
 
+  <img src="/assets/img/about/ava.jpeg" />
+
+  <br /><h1>Hi!</h1>
+
+  <div>I'm Slava Bezborodov, a web developer, a team leader at <a href="https://cian.ru">cian</a>, a <a href="https://conf.python.ru/moscow/2020">MoscowPythonConf++</a> program committee member.</div>
+
+  <br /><div>Check out <a href="https://wiki.slavabezborodov.com">my wiki</a> where I share everything I know.</div>
+
+  <br /><h1>Events</h1>
+
+  <h2>2020</h2>
+
+  <ul>
+    <li><a href="https://conf.python.ru/moscow/2020/abstracts/7107">Bookclub about "Fluent Python"</a> at <a href="https://conf.python.ru/moscow/2020">Russian Python Week</a> online conference</li>
+    <li><a href="https://conf.python.ru/moscow/2020/abstracts/7101">Bookclub about "Test-Driven-Development in Python"</a> at <a href="https://conf.python.ru/moscow/2020">Russian Python Week</a>  online conference</li>
+  </ul>
+
+  <br /><h1>Posts</h1>
 
   {% if site.paginate %}
     {% assign posts = paginator.posts %}
   {% else %}
     {% assign posts = site.posts %}
   {% endif %}
-
 
   {%- if posts.size > 0 -%}
     {%- if page.list_title -%}
