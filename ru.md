@@ -6,9 +6,7 @@ permalink: /ru-ru/
 
 ![](/assets/img/about/ava.jpeg)
 
-Я Слава Безбородов, web-разработчик, team lead в компании [Циан](https://cian.ru), член ПК [MoscowPythonConf++](https://conf.python.ru/moscow/2020).
-
-Загляни на [мою вики](https://wiki.slavabezborodov.com), где я делюсь своими заметками.
+Я Слава Безбородов, web-разработчик, team lead в компании [Циан](https://cian.ru). Загляни на [мою вики](https://wiki.slavabezborodov.com), где я делюсь своими заметками.
 
 ### Выступления
 

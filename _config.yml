@@ -22,31 +22,6 @@ url: "https://slavabezborodov.com" # the base hostname & protocol for your site,
 
 google_analytics: UA-166905534-1
 
-donate_services:
-  - yandex_money:
-    type: yandex
-    title: Yandex.Money
-    description: Money from bank cards or from Yandex.Money Wallets including 0.5% commission
-    config:
-      wallet: 4100112640469842
-      services:
-        - amount: 100
-          description: Cheap and simple
-        - amount: 250
-          description: Top up my phone balance
-        - amount: 500
-          description: One pizza for me
-        - amount: 999
-          description: Three nines
-        - description: In fact, any donation makes me happier!
-  - patreon:
-    type: patreon
-    title: Patreon
-    description: >-
-      I retain creative freedom while getting the salary I deserve,
-      and you get to rest easy knowing that your money goes directly
-      towards creating more of what you love
-
 # Build settings
 markdown: kramdown
 theme: minima
