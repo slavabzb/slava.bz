@@ -23,4 +23,10 @@ permalink: /ru-ru/
 
 ### Публикации
 
+#### 2021
+
+- [Мой топ книг о Python](https://habr.com/ru/company/yandex_praktikum/blog/553900/) на [habr.com](https://habr.com)
+
+#### 2020
+
 - [Как готовить коллтрекинг: опыт Циан](https://habr.com/ru/company/cian/blog/505536/) на [habr.com](https://habr.com)
