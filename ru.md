@@ -6,7 +6,7 @@ permalink: /ru-ru/
 
 ![](/assets/img/about/ava.jpeg)
 
-Я Слава Безбородов, web-разработчик, team lead в компании [Циан](https://cian.ru). Загляни на [мою вики](https://wiki.slavabezborodov.com), где я делюсь своими заметками.
+Я Слава Безбородов, руководитель команды «Профессиональные инструменты» в [Циане](https://cian.ru/), член ПК [Moscow Python Conf](https://conf.python.ru/) и член core-команды авторов в [Яндекс.Практикуме](https://praktikum.yandex.ru/middle-python/). Загляни на [мою вики](https://wiki.slavabezborodov.com), где я делюсь своими заметками.
 
 ### Выступления
 
@@ -25,8 +25,8 @@ permalink: /ru-ru/
 
 #### 2021
 
-- [Мой топ книг о Python](https://habr.com/ru/company/yandex_praktikum/blog/553900/) на [habr.com](https://habr.com)
+- [Мой топ книг о Python](https://habr.com/ru/company/yandex_praktikum/blog/553900/)
 
 #### 2020
 
-- [Как готовить коллтрекинг: опыт Циан](https://habr.com/ru/company/cian/blog/505536/) на [habr.com](https://habr.com)
+- [Как готовить коллтрекинг: опыт Циан](https://habr.com/ru/company/cian/blog/505536/)
