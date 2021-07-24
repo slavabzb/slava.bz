@@ -38,8 +38,12 @@ header_pages:
 - ru.md
 
 cv:
-  city: Moscow
-  job: Software Engineer
+  en:
+    city: Moscow
+    job: Software Engineer
+  ru:
+    city: Москва
+    job: Веб разработчик
 
 minima:
   social_links:
