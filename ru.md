@@ -25,6 +25,7 @@ permalink: /ru-ru/
 
 #### 2021
 
+- [Как стать мидл python-разработчиком за полгода: опыт выпускников Практикума](https://habr.com/ru/company/yandex_praktikum/blog/575516/)
 - [Мой топ книг о Python](https://habr.com/ru/company/yandex_praktikum/blog/553900/)
 
 #### 2020
