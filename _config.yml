@@ -14,13 +14,13 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 title: Slava Bezborodov
-email: slavabezborodov56@gmail.com
+email: slavabzb@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
   My journey around the IT world
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://slavabezborodov.com" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://slava.bz" # the base hostname & protocol for your site, e.g. http://example.com
 
-google_analytics: UA-166905534-1
+google_analytics: G-GNHZBZVN8M
 
 # Build settings
 markdown: kramdown
@@ -33,7 +33,6 @@ plugins:
 # If you want to link only specific pages in your header, uncomment
 # this and add the path to the pages in order as they should show up
 header_pages:
-- donate.md
 - cv.html
 - ru.md
 
@@ -47,17 +46,17 @@ cv:
 
 minima:
   social_links:
-    # twitter: jekyllrb
-    github: slavabezborodov56
+    twitter: slavabzb
+    github: slavabzb
     stackoverflow: "8664596"
     # dribbble: jekyll
-    facebook: slavabezborodov56
-    vk: slavabezborodov56
+    facebook: slavabzb
+    vk: slavabzb
     # flickr: jekyll
-    instagram: slavabezborodov56
-    linkedin: slavabezborodov56
+    instagram: slavabzb
+    linkedin: slavabzb
     # pinterest: jekyll
-    telegram: slavabezborodov56
+    telegram: slavabzb
     # microdotblog: jekyll
     # keybase: jekyll
     habr: slavabezborodov56

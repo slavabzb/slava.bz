@@ -8,7 +8,7 @@ source "https://rubygems.org"
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "~> 3.8.6"
+gem "jekyll", "~> 3.9.0"
 
 # Theme.
 gem "minima", "~> 2.5.1"
@@ -21,6 +21,7 @@ gem "minima", "~> 2.5.1"
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.13"
   gem "jekyll-sitemap", "~> 1.4"
+  gem "kramdown-parser-gfm", "~> 1.1.0"
 end
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
