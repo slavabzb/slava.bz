@@ -25,9 +25,20 @@ title: CV
     <ul class="contact-list">
       {%- if site.url -%}<li><a rel="me" href="{{ site.url | escape }}" title="{{ site.url | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#homepage' | relative_url }}"></use></svg>{{ site.url | escape }}</a></li>{%- endif -%}
       {%- if site.email -%}<li><a rel="me" href="mailto:{{ site.email | cgi_escape | escape }}" title="{{ site.email | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#gmail' | relative_url }}"></use></svg>{{ site.email | escape }}</a></li>{%- endif -%}
-      {%- if social.linkedin -%}<li><a rel="me" href="https://www.linkedin.com/in/{{ social.linkedin | cgi_escape | escape }}" title="{{ social.linkedin | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#linkedin' | relative_url }}"></use></svg>{{ social.linkedin | escape }}</a></li>{%- endif -%}
-      {%- if social.github -%}<li><a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>{{ social.github | escape }}</a></li>{%- endif -%}
-      {%- if social.telegram -%}<li><a rel="me" href="https://t.me/{{ social.telegram | cgi_escape | escape }}" title="{{ social.telegram | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#telegram' | relative_url }}"></use></svg>{{ social.telegram | escape }}</a></li>{%- endif -%}
+
+      <li>&nbsp;<br /></li>
+
+      <li>{{ social.username | escape }} @</li>
+
+      {%- if social.linkedin -%}<li><a rel="me" href="https://www.linkedin.com/in/{{ social.linkedin | cgi_escape | escape }}" title="{{ social.linkedin | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#linkedin' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.github -%}<li><a rel="me" href="https://github.com/{{ social.github | cgi_escape | escape }}" title="{{ social.github | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.habr -%}<li><a href="https://habr.com/ru/users/{{ social.habr | cgi_escape | escape }}" title="{{ social.habr | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#habr' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.telegram -%}<li><a rel="me" href="https://t.me/{{ social.telegram | cgi_escape | escape }}" title="{{ social.telegram | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#telegram' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.vk -%}<li><a rel="me" href="https://vk.com/{{ social.vk | cgi_escape | escape }}" title="{{ social.vk | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#vk' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.facebook -%}<li><a rel="me" href="https://www.facebook.com/{{ social.facebook | cgi_escape | escape }}" title="{{ social.facebook | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#facebook' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.twitter -%}<li><a rel="me" href="https://twitter.com/{{ social.twitter | cgi_escape | escape }}" title="{{ social.twitter | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use></svg></a></li>{%- endif -%}
+      {%- if social.instagram -%}<li><a rel="me" href="https://www.instagram.com/{{ social.instagram | cgi_escape | escape }}" title="{{ social.instagram | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#instagram' | relative_url }}"></use></svg></a></li>{%- endif -%}
+
     </ul>
 
     <div class="section">

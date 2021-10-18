@@ -74,14 +74,15 @@ body {
   li {
     list-style-type: none;
     display: inline;
+    vertical-align: middle;
   }
 
   .svg-icon {
+    vertical-align: middle;
     width: 16px;
     height: 16px;
     fill: currentColor;
     padding: 5px 3px 2px 5px;
-    vertical-align: middle;
   }
 
   .grey {
