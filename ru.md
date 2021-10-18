@@ -6,7 +6,7 @@ permalink: /ru-ru/
 
 ![](/assets/img/about/ava.jpeg)
 
-Я Слава Безбородов, руководитель команды «Профессиональные инструменты» в [Циане](https://cian.ru/) и член ПК [Moscow Python Conf](https://conf.python.ru/). Загляни на [мою вики](https://wiki.slava.bz), где я делюсь своими заметками.
+Я Слава Безбородов, руководитель команды «Профессиональные инструменты» в [Циане](https://cian.ru/) и член ПК [Moscow Python Conf](https://conf.python.ru/). Загляни в мой [блог](https://blog.slava.bz) на мою [вики](https://wiki.slava.bz), где я делюсь своими заметками.
 
 ### Выступления
 
