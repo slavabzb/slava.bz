@@ -38,7 +38,7 @@ header_pages:
 
 cv:
   en:
-    city: Moscow
+    city: Russia
     job: Software Engineer
   ru:
     city: Москва
@@ -51,7 +51,7 @@ minima:
     github: slavabzb
     stackoverflow: "8664596"
     # dribbble: jekyll
-    facebook: slavabzb
+    facebook: slavabzblog
     vk: slavabzb
     # flickr: jekyll
     instagram: slavabzb
