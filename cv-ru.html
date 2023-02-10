@@ -9,13 +9,7 @@ title: CV
 <section class="sheet padding-10mm">
   <article>
     <div class="headline">
-      <h1><span style="color: #999999">Слава</span> <strong>Безбородов</strong></h1>
-      <div class="summary">{{ cv.job }} · {{ cv.city }}</div>
-
-      <div class="ava">
-        <img src="/assets/img/cv/ava-v2.jpeg" />
-      </div>
-
+      <h1>Слава Безбородов</h1>
     </div>
 
     <ul class="contact-list">
@@ -36,6 +30,19 @@ title: CV
       {%- if social.instagram -%}<li><a rel="me" href="https://www.instagram.com/{{ social.instagram | cgi_escape | escape }}" title="{{ social.instagram | escape }}"><svg class="svg-icon grey"><use xlink:href="{{ '/assets/minima-social-icons.svg#instagram' | relative_url }}"></use></svg></a></li>{%- endif -%}
 
     </ul>
+
+    <div class="section">
+      <h1>Краткий обзор</h1>
+      <div class="entry">
+        Ориентированный на результат {{ cv.job }} с управленческим опытом в IT.
+        Опыт в управлении кросс-командными проектами с 20+ млн уникальных пользователей в месяц.
+      </div>
+      <div class="entry">
+        Специализируюсь на управлении проектами, процессами и людьми,
+        поставке новых продуктов, а также развитии существующих систем.
+        Пишу на Python 50-70% времени.
+      </div>
+    </div>
 
     <div class="section">
       <h1>Опыт</h1>
@@ -197,12 +204,12 @@ title: CV
 
         <div class="group">
           <div class="level">Продвинутый</div>
-          <div class="description">Python · PostgreSQL</div>
+          <div class="description">Python · PostgreSQL · RabbitMQ</div>
         </div>
 
         <div class="group">
           <div class="level">Средний</div>
-          <div class="description">ElasticSearch · Cassandra · Redis · RabbitMQ · Kafka · SQL Server · TypeScript</div>
+          <div class="description">Nginx · ElasticSearch · Cassandra · Redis · Kafka · SQL Server · TypeScript</div>
         </div>
 
         <div class="group">
