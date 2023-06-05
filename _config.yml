@@ -16,7 +16,7 @@
 title: Slava Bezborodov
 email: slavabzb@gmail.com
 description: >- # this means to ignore newlines until "baseurl:"
-  My journey around the IT world
+  My IT journey
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://slava.bz" # the base hostname & protocol for your site, e.g. http://example.com
 
@@ -39,10 +39,10 @@ header_pages:
 cv:
   en:
     city: Russia
-    job: Web Developer
+    job: Web Developer with the leadership experience
   ru:
     city: Москва
-    job: Веб разработчик
+    job: Веб разработчик с управленческим опытом
 
 minima:
   social_links:
@@ -51,7 +51,7 @@ minima:
     github: slavabzb
     stackoverflow: "8664596"
     # dribbble: jekyll
-    facebook: slavabzblog
+    facebook: slavabzb
     vk: slavabzb
     # flickr: jekyll
     instagram: slavabzb
